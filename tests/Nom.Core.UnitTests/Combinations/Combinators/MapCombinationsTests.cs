@@ -16,24 +16,24 @@ public class MapCombinationsTests
     [Fact]
     public void CombinationParses_TwoWordsParserIntoPerson_AndLeavesRemains()
     {
-        var input = "Wanda Maximoff_";
+        var input = "Wanda Maximoff_".AsParsable();
         var expected = new Person
         {
             FirstName = "Wanda",
             LastName = "Maximoff",
         };
 
-        var twoWordsParser = SeparatedPair.Create(Alphabet.Create(), Character.Create(' '), Alphabet.Create());
+        var twoWordsParser = SeparatedPair.Create(Alphabetics.Create(), Character.Create(' '), Alphabetics.Create());
 
-        var personParser = Map.Create(twoWordsParser, ((string FirstName, string LastName) x) => new Person
+        var personParser = Map.Create(twoWordsParser, ((StringParsable FirstName, StringParsable LastName) x) => new Person
         {
-            FirstName = x.FirstName,
-            LastName = x.LastName,
+            FirstName = x.FirstName.Content,
+            LastName = x.LastName.Content,
         });
 
         var result = personParser.Parse(input);
 
-        Assert.Equal("_", result.Remaining);
+        Assert.Equal("_", result.Remainder.Content);
         Assert.Equal(expected, result.Output);
     }
 }

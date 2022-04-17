@@ -2,20 +2,28 @@
 
 namespace Nom.Characters;
 
-public interface ILineEndingParser : IParser<string, string> { }
-
-public class LineEndingParser : ILineEndingParser
+public interface ILineEndingParser<T> : IParser<T, T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
 {
-    public IResult<string, string> Parse(string input)
+}
+
+public class LineEndingParser<T> : ILineEndingParser<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+{
+    public IResult<T, T> Parse(T input)
     {
-        return CommonParsings.ParseStringByMatchingRegex(input, @"^((\n)|(\r\n))", new()
+        return CommonParsings.ParseByMatchingRegex(input, @"^((\r|)\n)", new()
         {
-            ExceptionFactory = (_, _) => new InvalidOperationException("No line ending was matched at head"),
+            ExceptionFactory = (_, _) => new InvalidOperationException($"Could not parse line ending at head"),
         });
     }
 }
 
 public static class LineEnding
 {
-    public static ILineEndingParser Create() => new LineEndingParser();
+    public static ILineEndingParser<StringParsable> Create() => new LineEndingParser<StringParsable>();
+
+    public static ILineEndingParser<T> Create<T>()
+        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+        => new LineEndingParser<T>();
 }

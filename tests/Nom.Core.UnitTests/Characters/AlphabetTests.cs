@@ -8,10 +8,12 @@ public class AlphabetTests
     [Fact]
     public void AlphabetParsesAlphabetics()
     {
-        var parser = Alphabet.Create();
+        var input = "abc1abc".AsParsable();
+        var expected = Result.Create("1abc".AsParsable() with { Offset = 3 }, "abc".AsParsable());
+        var parser = Alphabetics.Create();
 
-        var result = parser.Parse("abc1abc");
+        var result = parser.Parse(input);
 
-        Assert.Equal(Result.Create("1abc", "abc"), result);
+        Assert.Equal(expected, result);
     }
 }
