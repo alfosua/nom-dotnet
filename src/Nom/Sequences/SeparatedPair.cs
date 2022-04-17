@@ -2,11 +2,13 @@
 
 public interface ISeparatedPairParser<TCommonInput, TLeftOutput, TSeparatorOutput, TRightOutput>
     : IParser<TCommonInput, (TLeftOutput, TRightOutput)>
+    where TCommonInput : IParsable
 {
 }
 
 public class SeparatedPairParser<TCommonInput, TLeftOutput, TSeparatorOutput, TRightOutput>
     : ISeparatedPairParser<TCommonInput, TLeftOutput, TSeparatorOutput, TRightOutput>
+    where TCommonInput : IParsable
 {
     public SeparatedPairParser(IParser<TCommonInput, TLeftOutput> left, IParser<TCommonInput, TSeparatorOutput> separator, IParser<TCommonInput, TRightOutput> right)
     {
@@ -22,9 +24,9 @@ public class SeparatedPairParser<TCommonInput, TLeftOutput, TSeparatorOutput, TR
     public IResult<TCommonInput, (TLeftOutput, TRightOutput)> Parse(TCommonInput input)
     {
         var leftResult = Left.Parse(input);
-        var separtorResult = Separator.Parse(leftResult.Remaining);
-        var rightResult = Right.Parse(separtorResult.Remaining);
-        return Result.Create(rightResult.Remaining, (leftResult.Output, rightResult.Output));
+        var separtorResult = Separator.Parse(leftResult.Remainder);
+        var rightResult = Right.Parse(separtorResult.Remainder);
+        return Result.Create(rightResult.Remainder, (leftResult.Output, rightResult.Output));
     }
 }
 
@@ -35,6 +37,7 @@ public static class SeparatedPair
             IParser<TCommonInput, TLeftOutput> left,
             IParser<TCommonInput, TSeparatorOutput> separator,
             IParser<TCommonInput, TRightOutput> right)
+            where TCommonInput : IParsable
     {
         return new SeparatedPairParser<TCommonInput, TLeftOutput, TSeparatorOutput, TRightOutput>(left, separator, right);
     }

@@ -2,11 +2,13 @@
 
 public interface ISeparatedListParser<TCommonInput, TSeparatorOutput, TEachItemOutput>
     : IParser<TCommonInput, ICollection<TEachItemOutput>>
+    where TCommonInput : IParsable
 {
 }
 
 public class SeparatedListParser<TCommonInput, TSeparatorOutput, TEachItemOutput>
     : ISeparatedListParser<TCommonInput, TSeparatorOutput, TEachItemOutput>
+    where TCommonInput : IParsable
 {
     public SeparatedListParser(IParser<TCommonInput, TSeparatorOutput> separator, IParser<TCommonInput, TEachItemOutput> eachItem)
     {
@@ -26,12 +28,12 @@ public class SeparatedListParser<TCommonInput, TSeparatorOutput, TEachItemOutput
         while (stillListing)
         {
             var itemResult = EachItem.Parse(remaining);
-            remaining = itemResult.Remaining;
+            remaining = itemResult.Remainder;
             outputs.Add(itemResult.Output);
             try
             {
-                var separatorResult = Separator.Parse(itemResult.Remaining);
-                remaining = separatorResult.Remaining;
+                var separatorResult = Separator.Parse(itemResult.Remainder);
+                remaining = separatorResult.Remainder;
             }
             catch
             {
@@ -49,6 +51,7 @@ public static class SeparatedList
         Create<TCommonInput, TSeparatorOutput, TEachItemOutput>(
             IParser<TCommonInput, TSeparatorOutput> separatorParser,
             IParser<TCommonInput, TEachItemOutput> eachItemParser)
+            where TCommonInput : IParsable
     {
         return new SeparatedListParser<TCommonInput, TSeparatorOutput, TEachItemOutput>(separatorParser, eachItemParser);
     }

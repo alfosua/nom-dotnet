@@ -1,8 +1,13 @@
 ﻿namespace Nom.Sequences;
 
-public interface IPairParser<TCommonInput, TLeftOutput, TRightOutput> : IParser<TCommonInput, (TLeftOutput, TRightOutput)> { }
+public interface IPairParser<TCommonInput, TLeftOutput, TRightOutput>
+    : IParser<TCommonInput, (TLeftOutput, TRightOutput)>
+    where TCommonInput : IParsable
+{
+}
 
 public class PairParser<TCommonInput, TLeftOutput, TRightOutput> : IPairParser<TCommonInput, TLeftOutput, TRightOutput>
+    where TCommonInput : IParsable
 {
     public PairParser(IParser<TCommonInput, TLeftOutput> left, IParser<TCommonInput, TRightOutput> right)
     {
@@ -16,8 +21,8 @@ public class PairParser<TCommonInput, TLeftOutput, TRightOutput> : IPairParser<T
     public IResult<TCommonInput, (TLeftOutput, TRightOutput)> Parse(TCommonInput input)
     {
         var leftResult = Left.Parse(input);
-        var rightResult = Right.Parse(leftResult.Remaining);
-        return Result.Create(rightResult.Remaining, (leftResult.Output, rightResult.Output));
+        var rightResult = Right.Parse(leftResult.Remainder);
+        return Result.Create(rightResult.Remainder, (leftResult.Output, rightResult.Output));
     }
 }
 
@@ -28,6 +33,7 @@ public static class Pair
         Create<TCommonInput, TLeftOutput, TRightOutput>(
             IParser<TCommonInput, TLeftOutput> left,
             IParser<TCommonInput, TRightOutput> right)
+            where TCommonInput : IParsable
     {
         return new PairParser<TCommonInput, TLeftOutput, TRightOutput>(left, right);
     }

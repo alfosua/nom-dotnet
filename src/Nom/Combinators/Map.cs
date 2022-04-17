@@ -3,11 +3,13 @@
 public delegate TMapOutput MapDelegate<TParserOutput, TMapOutput>(TParserOutput parserOutput);
 
 public interface IMapParser<TInput, TParserOutput, TMapOutput> : IParser<TInput, TMapOutput>
+    where TInput : IParsable
 {
 }
 
 public class MapParser<TInput, TParserOutput, TMapOutput>
     : IMapParser<TInput, TParserOutput, TMapOutput>
+    where TInput : IParsable
 {
     public MapParser(IParser<TInput, TParserOutput> parser, MapDelegate<TParserOutput, TMapOutput> mapDelegate)
     {
@@ -22,7 +24,7 @@ public class MapParser<TInput, TParserOutput, TMapOutput>
     {
         var parserResult = Parser.Parse(input);
         var mapOutput = Delegate.Invoke(parserResult.Output);
-        return Result.Create(parserResult.Remaining, mapOutput);
+        return Result.Create(parserResult.Remainder, mapOutput);
     }
 }
 
@@ -32,6 +34,7 @@ public static class Map
         Create<TInput, TParserOutput, TMapOutput>(
             IParser<TInput, TParserOutput> parser,
             MapDelegate<TParserOutput, TMapOutput> mapDelegate)
+            where TInput : IParsable
     {
         return new MapParser<TInput, TParserOutput, TMapOutput>(parser, mapDelegate);
     }

@@ -8,10 +8,13 @@ public class DigitTests
     [Fact]
     public void DigitParsesStringWithOneOrMoreDigits()
     {
-        var parser = Digit.Create();
+        //@Todo: Improve tests
+        var input = "123".AsParsable();
+        var expected = Result.Create("".AsParsable() with { Offset = 3 }, "123".AsParsable());
+        var parser = Digits.Create();
 
-        var result = parser.Parse("123");
+        var result = parser.Parse(input);
 
-        Assert.Equal(Result.Create("", "123"), result);
+        Assert.Equal(expected, result);
     }
 }

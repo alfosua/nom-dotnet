@@ -9,12 +9,16 @@ public class DigitCombinationsTests
     [Fact]
     public void TestDigitAndSeparatedPair()
     {
-        var digit = Digit.Create();
+        var expected = Result.Create(
+            "".AsParsable() with { Offset = 7 },
+            ("123".AsParsable(), "123".AsParsable() with { Offset = 4 }));
+        var input = "123-123".AsParsable();
+        var digit = Digits.Create();
         var chara = Character.Create('-');
         var parser = SeparatedPair.Create(digit, chara, digit);
 
-        var result = parser.Parse("123-123");
+        var result = parser.Parse(input);
 
-        Assert.Equal(Result.Create("", ("123", "123")), result);
+        Assert.Equal(expected, result);
     }
 }

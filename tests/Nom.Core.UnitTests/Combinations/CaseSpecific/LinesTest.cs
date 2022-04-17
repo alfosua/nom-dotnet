@@ -13,15 +13,15 @@ public class LinesTest
     public record Point(int x, int y);
     public record Line(Point p0, Point p1);
 
-    public IParser<string, Point> CreatePointParser()
+    public IParser<StringParsable, Point> CreatePointParser()
     {
-        var numberParser = Map.Create(Digit.Create(), (n) => int.Parse(n));
+        var numberParser = Map.Create(Digits.Create(), (n) => int.Parse(n.Content));
         var twoNumbersParser = SeparatedPair.Create(numberParser, Character.Create(','), numberParser);
         var pointParser = Map.Create(twoNumbersParser, ((int x, int y) p) => new Point(p.x, p.y));
         return pointParser;
     }
 
-    public IParser<string, Line> CreateLineParser()
+    public IParser<StringParsable, Line> CreateLineParser()
     {
         var pointParser = CreatePointParser();
         var arrowParser = Tag.Create(" -> ");
@@ -30,7 +30,7 @@ public class LinesTest
         return lineParser;
     }
 
-    public IParser<string, ICollection<Line>> CreateLinesParser()
+    public IParser<StringParsable, ICollection<Line>> CreateLinesParser()
     {
         var lineParser = CreateLineParser();
         var linesParser = SeparatedList.Create(LineEnding.Create(), lineParser);
@@ -50,9 +50,9 @@ public class LinesTest
 
         foreach (var (input, expected, expectedRem) in tests)
         {
-            var result = pointParser.Parse(input);
+            var result = pointParser.Parse(input.AsParsable());
             Assert.Equal(expected, result.Output);
-            Assert.Equal(expectedRem, result.Remaining);
+            Assert.Equal(expectedRem, result.Remainder.Content);
         }
     }
 
@@ -69,9 +69,9 @@ public class LinesTest
 
         foreach (var (input, expected, expectedRem) in tests)
         {
-            var result = lineParser.Parse(input);
+            var result = lineParser.Parse(input.AsParsable());
             Assert.Equal(expected, result.Output);
-            Assert.Equal(expectedRem, result.Remaining);
+            Assert.Equal(expectedRem, result.Remainder.Content);
         }
     }
 
@@ -87,7 +87,8 @@ public class LinesTest
 0,9 -> 2,9
 3,4 -> 1,4
 0,0 -> 8,8
-5,5 -> 8,2";
+5,5 -> 8,2".AsParsable();
+        
         var expected = new List<Line>
         {
             new Line(new(0, 9), new(5, 9)),
@@ -107,6 +108,6 @@ public class LinesTest
         var result = linesParser.Parse(input);
 
         Assert.Equal(expected, result.Output);
-        Assert.Equal("", result.Remaining);
+        Assert.Equal("", result.Remainder.Content);
     }
 }

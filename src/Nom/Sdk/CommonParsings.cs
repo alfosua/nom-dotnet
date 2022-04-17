@@ -4,17 +4,50 @@ namespace Nom.Sdk;
 
 public static class CommonParsings
 {
-    public static IResult<string, string> ParseStringByMatchingRegex(string input, string pattern, ParsingOptions? options = null)
+    public static void CheckInputIsNotEmpty<TEmptyCheckable>(TEmptyCheckable input)
+        where TEmptyCheckable : IEmptyCheckable
     {
-        var match = Regex.Match(input, pattern);
+        if (input.IsEmpty())
+        {
+            throw CommonExceptions.NotEnoughInputData();
+        }
+    }
+
+    public static IResult<TParsable, TParsable> ParseByPredicatingNextContent<TParsable, TContent>(
+        TParsable input, Func<TContent, bool> predicate, ParsingOptions<TParsable>? options = null)
+        where TParsable : IParsable, ISplitableAtPosition<TParsable>, IContentVisitable<TContent>
+    {
+        CheckInputIsNotEmpty(input);
+
+        var (output, remainder) = input.SplitAtPosition(1);
+
+        if (predicate(output.VisitContent()))
+        {
+            return Result.Create(remainder, output);
+        }
+        else
+        {
+            throw options?.ExceptionFactory?.Invoke(input)
+                ?? new InvalidOperationException($"Could not parse next character at head");
+        }
+    }
+    
+    public static IResult<T, T> ParseByMatchingRegex<T>(
+        T input, string pattern, RegexParsingOptions<T>? options = null)
+        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    {
+        if (options?.ThrowWhenEmptyInput ?? false)
+        {
+            CheckInputIsNotEmpty(input);
+        }
+
+        var match = input.MatchRegex(pattern, options?.RegexOptions ?? RegexOptions.None);
 
         if (match.Success)
         {
-            var nextInput = input.Substring(match.Length);
+            var (output, remainder) = input.SplitAtPosition(match.Length);
 
-            var result = match.Value;
-
-            return Result.Create(nextInput, result);
+            return Result.Create(remainder, output);
         }
         else
         {
@@ -23,10 +56,33 @@ public static class CommonParsings
         }
     }
 
-    public class ParsingOptions
+    public class ParsingOptions<TParsable>
+        where TParsable : IParsable
     {
+        public delegate Exception ExceptionCreate(TParsable input);
+
         public ExceptionCreate? ExceptionFactory { get; set; }
 
-        public delegate Exception ExceptionCreate(string input, Match regexMatch);
+        public bool ThrowWhenEmptyInput { get; set; } = true;
+    }
+
+    public class RegexParsingOptions<T>
+        where T : IParsable, IRegexMatchable
+    {
+        public delegate Exception ExceptionCreate(T input, Match regexMatch);
+
+        public ExceptionCreate? ExceptionFactory { get; set; }
+        
+        public bool ThrowWhenEmptyInput { get; set; } = true;
+
+        public RegexOptions RegexOptions { get; set; } = RegexOptions.None;
+    }
+}
+
+public static class CommonExceptions
+{
+    public static InvalidOperationException NotEnoughInputData()
+    {
+        return new InvalidOperationException("Not enough input data");
     }
 }

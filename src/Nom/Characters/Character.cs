@@ -2,9 +2,13 @@
 
 namespace Nom.Characters;
 
-public interface ICharacterParser : IParser<string, string> { }
+public interface ICharacterParser<T> : IParser<T, T>
+    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>
+{
+}
 
-public class CharacterParser : ICharacterParser
+public class CharacterParser<T> : ICharacterParser<T>
+    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>
 {
     public CharacterParser(char target)
     {
@@ -13,16 +17,20 @@ public class CharacterParser : ICharacterParser
 
     public char Target { get; }
 
-    public IResult<string, string> Parse(string input)
+    public IResult<T, T> Parse(T input)
     {
-        return CommonParsings.ParseStringByMatchingRegex(input, $@"^{Target}", new()
+        return CommonParsings.ParseByPredicatingNextContent<T, char>(input, c => c == Target, new()
         {
-            ExceptionFactory = (_, _) => new InvalidOperationException($"No character '{Target}' was matched at head"),
+            ExceptionFactory = (_) => new InvalidOperationException($"Could not parse character '{Target}' at head"),
         });
     }
 }
 
 public static class Character
 {
-    public static ICharacterParser Create(char target) => new CharacterParser(target);
+    public static ICharacterParser<StringParsable> Create(char target) => new CharacterParser<StringParsable>(target);
+
+    public static ICharacterParser<T> Create<T>(char target)
+        where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>
+        => new CharacterParser<T>(target);
 }

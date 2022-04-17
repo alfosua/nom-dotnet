@@ -2,9 +2,13 @@
 
 namespace Nom.Strings;
 
-public interface ITagParser : IParser<string, string> { }
+public interface ITagParser<T> : IParser<T, T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+{
+}
 
-public class TagParser : ITagParser
+public class TagParser<T> : ITagParser<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
 {
     public TagParser(string target)
     {
@@ -13,9 +17,9 @@ public class TagParser : ITagParser
 
     public string Target { get; }
 
-    public IResult<string, string> Parse(string input)
+    public IResult<T, T> Parse(T input)
     {
-        return CommonParsings.ParseStringByMatchingRegex(input, $@"^({Target})", new()
+        return CommonParsings.ParseByMatchingRegex(input, $@"^({Target})", new()
         {
             ExceptionFactory = (_, _) => new InvalidOperationException($"Could not parse tag '{Target}' at head"),
         });
@@ -24,5 +28,9 @@ public class TagParser : ITagParser
 
 public static class Tag
 {
-    public static ITagParser Create(string target) => new TagParser(target);
+    public static ITagParser<StringParsable> Create(string target) => new TagParser<StringParsable>(target);
+
+    public static ITagParser<T> Create<T>(string target)
+        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+        => new TagParser<T>(target);
 }
