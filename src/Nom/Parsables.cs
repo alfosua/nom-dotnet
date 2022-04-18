@@ -1,9 +1,10 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace Nom;
 
 public record StringParsable : IParsable
-    , IWithContent<string>
+    , IWithContent<ReadOnlyMemory<char>>
     , ISplitableAtPosition<StringParsable>
     , IRemainder
     , IEmptyCheckable
@@ -17,65 +18,65 @@ public record StringParsable : IParsable
 {
     public StringParsable()
     {
-        Content = string.Empty;
-    }
-    
-    public StringParsable(string content)
-    {
-        Content = content;
+        Content = ReadOnlyMemory<char>.Empty;
     }
 
-    public string Content { get; init; }
+    public StringParsable(string content)
+    {
+        Content = content.AsMemory();
+    }
+
+    public ReadOnlyMemory<char> Content { get; init; }
     public int Offset { get; init; }
     public int PrecedingLines { get; init; }
     public int PrecedingColumns { get; init; }
 
     public bool IsEmpty()
     {
-        return string.IsNullOrEmpty(Content);
+        return Content.IsEmpty;
     }
 
     public Match MatchRegex(string pattern, RegexOptions options = RegexOptions.None)
     {
-        return Regex.Match(Content, pattern, options);
+        return Regex.Match(Content.ToString(), pattern, options);
     }
 
     char IContentVisitable<char>.VisitContent()
     {
-        return Content[0];
+        return Content.Slice(0, 1).ToArray()[0];
     }
 
     string IContentVisitable<string>.VisitContent()
     {
-        return Content;
+        return Content.ToString();
     }
 
     public (StringParsable first, StringParsable second) SplitAtPosition(int position)
     {
         var firstContent = position == 0
-            ? string.Empty
-            : Content.Substring(0, position);
-
-        var firstInnerLines = firstContent.Length > 0 
-            ? Regex.Matches(firstContent, @"(\r\n|\n)").Count
-            : 0;
+            ? ReadOnlyMemory<char>.Empty
+            : Content.Slice(0, position);
+        
+        var (firstContainingLines, firstLastColumns) = CalculateLinesAndLastColumns(firstContent);
 
         var secondContent = position == 0
             ? Content
-            : Content.Substring(position);
+            : Content.Slice(position);
 
         var first = new StringParsable
         {
             Content = firstContent,
             Offset = Offset,
             PrecedingLines = PrecedingLines,
+            PrecedingColumns = PrecedingColumns,
         };
 
         var second = new StringParsable
         {
             Content = secondContent,
             Offset = Offset + firstContent.Length,
-            PrecedingLines = PrecedingLines + firstInnerLines,
+            PrecedingLines = PrecedingLines + firstContainingLines,
+            PrecedingColumns = PrecedingColumns + firstLastColumns,
         };
 
         return (first, second);
@@ -83,25 +84,60 @@ public record StringParsable : IParsable
 
     public StringParsable CreateEmptyTail()
     {
-        var containingLines = GetContainingLines();
+        var (containingLines, lastColumns) = CalculateLinesAndLastColumns(Content);
 
         return new StringParsable
         {
             Offset = Offset + Content.Length,
             PrecedingLines = PrecedingLines + containingLines,
+            PrecedingColumns = PrecedingColumns + lastColumns,
         };
     }
 
     public T DecorateEmptyTail<T>(T remainderMutator) where T : IRemainderMutator
     {
+        var (containingLines, lastColumns) = CalculateLinesAndLastColumns(Content);
+        
         remainderMutator.SetOffset(Offset + Content.Length);
-        remainderMutator.SetPrecedingLines(PrecedingLines + GetContainingLines());
+        remainderMutator.SetPrecedingLines(PrecedingLines + containingLines);
+        remainderMutator.SetPrecedingColumns(PrecedingColumns + lastColumns);
+
         return remainderMutator;
     }
 
-    public int GetContainingLines() => Content.Length > 0
-        ? Regex.Matches(Content, @"(\r\n|\n)").Count
-        : 0;
+    public (int ContainingLines, int LastColumns) CalculateLinesAndLastColumns(ReadOnlyMemory<char> source)
+    {
+        if (source.IsEmpty)
+        {
+            return (0, 0);
+        }
+
+        var sourceSpan = source.Span;
+
+        int lineEndingCount = 0;
+        int lastColumnsCount = 0;
+
+        for (int i = 0; i < sourceSpan.Length; i++)
+        {
+            if (sourceSpan[i] == '\n')
+            {
+                lastColumnsCount = 0;
+                lineEndingCount++;
+            }
+            else if (i < sourceSpan.Length - 1 && sourceSpan[i] == '\r' && sourceSpan[i + 1] == '\n')
+            {
+                lastColumnsCount = 0;
+                lineEndingCount++;
+                i++;
+            }
+            else
+            {
+                lastColumnsCount++;
+            }
+        }
+
+        return (lineEndingCount, lastColumnsCount);
+    }
 
     public int GetContentLength()
     {
@@ -110,7 +146,7 @@ public record StringParsable : IParsable
 
     public IEnumerable<char> EnumerateContent()
     {
-        return Content.AsEnumerable();
+        return MemoryMarshal.ToEnumerable(Content);
     }
 }
 
@@ -154,6 +190,7 @@ public interface IRemainderMutator
 {
     void SetOffset(int value);
     void SetPrecedingLines(int value);
+    void SetPrecedingColumns(int value);
 }
 
 public interface ISplitableAtPosition<T>
