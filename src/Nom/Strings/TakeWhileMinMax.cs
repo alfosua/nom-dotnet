@@ -5,12 +5,12 @@ namespace Nom.Strings;
 public delegate bool TakeWhileMinMaxPredicate(char value);
 
 public interface ITakeWhileMinMaxParser<T> : IParser<T, T>
-    where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>
+    where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>, IEmptyCheckable
 {
 }
 
 public class TakeWhileMinMaxParser<T> : ITakeWhileMinMaxParser<T>
-    where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>
+    where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>, IEmptyCheckable
 {
     public TakeWhileMinMaxParser(TakeWhileMinMaxPredicate predicate, int min, int max)
     {
@@ -61,6 +61,6 @@ public class TakeWhileMinMaxParser<T> : ITakeWhileMinMaxParser<T>
 public static class TakeWhileMinMax
 {
     public static ITakeWhileMinMaxParser<T> Create<T>(TakeWhileMinMaxPredicate predicate, int min, int max)
-        where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>
+        where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>, IEmptyCheckable
         => new TakeWhileMinMaxParser<T>(predicate, min, max);
 }

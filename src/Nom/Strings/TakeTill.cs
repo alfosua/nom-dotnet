@@ -5,12 +5,12 @@ namespace Nom.Strings;
 public delegate bool TakeTillPredicate(char value);
 
 public interface ITakeTillParser<T> : IParser<T, T>
-    where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>
+    where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>, IEmptyCheckable
 {
 }
 
 public class TakeTillParser<T> : ITakeTillParser<T>
-    where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>
+    where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>, IEmptyCheckable
 {
     public TakeTillParser(TakeTillPredicate predicate)
     {
@@ -46,6 +46,6 @@ public class TakeTillParser<T> : ITakeTillParser<T>
 public static class TakeTill
 {
     public static ITakeTillParser<T> Create<T>(TakeTillPredicate predicate)
-        where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>
+        where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>, IEmptyCheckable
         => new TakeTillParser<T>(predicate);
 }

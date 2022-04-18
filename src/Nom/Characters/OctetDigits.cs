@@ -3,12 +3,12 @@
 namespace Nom.Characters;
 
 public interface IOctetDigitsParser<T> : IParser<T, T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
 }
 
 public class OctetDigitsParser<T> : IOctetDigitsParser<T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
     public IResult<T, T> Parse(T input)
     {
@@ -24,6 +24,6 @@ public static class OctetDigits
     public static IOctetDigitsParser<StringParsable> Create() => new OctetDigitsParser<StringParsable>();
     
     public static IOctetDigitsParser<T> Create<T>()
-        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new OctetDigitsParser<T>();
 }

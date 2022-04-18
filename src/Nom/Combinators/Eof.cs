@@ -1,13 +1,13 @@
 ﻿namespace Nom.Combinators;
 
 public interface IEofParser<TInput, TOutput> : IParser<TInput, TOutput>
-    where TInput : IParsable
+    where TInput : IParsable, IEmptyCheckable
     where TOutput : new()
 {
 }
 
 public class EofParser<TInput, TOutput> : IEofParser<TInput, TOutput>
-    where TInput : IParsable
+    where TInput : IParsable, IEmptyCheckable
     where TOutput : new()
 {
     public EofParser(IParser<TInput, TOutput> parser)
@@ -40,7 +40,7 @@ public class EofParser<TInput, TOutput> : IEofParser<TInput, TOutput>
 public static class Eof
 {
     public static IEofParser<TInput, TOutput> Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
-        where TInput : IParsable
+        where TInput : IParsable, IEmptyCheckable
         where TOutput : new()
     {
         return new EofParser<TInput, TOutput>(parser);

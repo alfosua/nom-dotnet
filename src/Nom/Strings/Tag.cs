@@ -3,12 +3,12 @@
 namespace Nom.Strings;
 
 public interface ITagParser<T> : IParser<T, T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
 }
 
 public class TagParser<T> : ITagParser<T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
     public TagParser(string target)
     {
@@ -31,6 +31,6 @@ public static class Tag
     public static ITagParser<StringParsable> Create(string target) => new TagParser<StringParsable>(target);
 
     public static ITagParser<T> Create<T>(string target)
-        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new TagParser<T>(target);
 }

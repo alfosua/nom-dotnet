@@ -3,12 +3,12 @@
 namespace Nom.Characters;
 
 public interface ICharacterParser<T> : IParser<T, T>
-    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>
+    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
 {
 }
 
 public class CharacterParser<T> : ICharacterParser<T>
-    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>
+    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
 {
     public CharacterParser(char target)
     {
@@ -31,6 +31,6 @@ public static class Character
     public static ICharacterParser<StringParsable> Create(char target) => new CharacterParser<StringParsable>(target);
 
     public static ICharacterParser<T> Create<T>(char target)
-        where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>
+        where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
         => new CharacterParser<T>(target);
 }

@@ -15,7 +15,7 @@ public static class CommonParsings
 
     public static IResult<TParsable, TParsable> ParseByPredicatingNextContent<TParsable, TContent>(
         TParsable input, Func<TContent, bool> predicate, ParsingOptions<TParsable>? options = null)
-        where TParsable : IParsable, ISplitableAtPosition<TParsable>, IContentVisitable<TContent>
+        where TParsable : IParsable, ISplitableAtPosition<TParsable>, IContentVisitable<TContent>, IEmptyCheckable
     {
         CheckInputIsNotEmpty(input);
 
@@ -34,7 +34,7 @@ public static class CommonParsings
     
     public static IResult<T, T> ParseByMatchingRegex<T>(
         T input, string pattern, RegexParsingOptions<T>? options = null)
-        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
     {
         if (options?.ThrowWhenEmptyInput ?? false)
         {

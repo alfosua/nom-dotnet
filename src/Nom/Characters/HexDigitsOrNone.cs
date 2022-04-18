@@ -3,12 +3,12 @@
 namespace Nom.Characters;
 
 public interface IHexDigitsOrNoneParser<T> : IParser<T, T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
 }
 
 public class HexDigitsOrNoneParser<T> : IHexDigitsOrNoneParser<T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
     public IResult<T, T> Parse(T input)
     {
@@ -24,6 +24,6 @@ public static class HexDigitsOrNone
     public static IHexDigitsOrNoneParser<StringParsable> Create() => new HexDigitsOrNoneParser<StringParsable>();
     
     public static IHexDigitsOrNoneParser<T> Create<T>()
-        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new HexDigitsOrNoneParser<T>();
 }

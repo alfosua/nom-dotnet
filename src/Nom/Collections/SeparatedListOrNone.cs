@@ -1,16 +1,16 @@
 ﻿namespace Nom.Collections;
 
-public interface ISeparatedListParser<TInput, TSeparatorOutput, TEachItemOutput>
+public interface ISeparatedListOrNoneParser<TInput, TSeparatorOutput, TEachItemOutput>
     : IParser<TInput, ICollection<TEachItemOutput>>
     where TInput : IParsable
 {
 }
 
-public class SeparatedListParser<TInput, TSeparatorOutput, TEachItemOutput>
-    : ISeparatedListParser<TInput, TSeparatorOutput, TEachItemOutput>
+public class SeparatedListOrNoneParser<TInput, TSeparatorOutput, TEachItemOutput>
+    : ISeparatedListOrNoneParser<TInput, TSeparatorOutput, TEachItemOutput>
     where TInput : IParsable
 {
-    public SeparatedListParser(IParser<TInput, TSeparatorOutput> separator, IParser<TInput, TEachItemOutput> eachItem)
+    public SeparatedListOrNoneParser(IParser<TInput, TSeparatorOutput> separator, IParser<TInput, TEachItemOutput> eachItem)
     {
         EachItem = eachItem;
         Separator = separator;
@@ -41,24 +41,18 @@ public class SeparatedListParser<TInput, TSeparatorOutput, TEachItemOutput>
 
             }
         }
-
-        if (outputs.Count == 0)
-        {
-            throw new InvalidOperationException("Could not parse anything with given criteria");
-        }
-
         return Result.Create(remaining, outputs);
     }
 }
 
-public static class SeparatedList
+public static class SeparatedListOrNone
 {
-    public static ISeparatedListParser<TInput, TSeparatorOutput, TEachItemOutput>
+    public static ISeparatedListOrNoneParser<TInput, TSeparatorOutput, TEachItemOutput>
         Create<TInput, TSeparatorOutput, TEachItemOutput>(
             IParser<TInput, TSeparatorOutput> separatorParser,
             IParser<TInput, TEachItemOutput> eachItemParser)
             where TInput : IParsable
     {
-        return new SeparatedListParser<TInput, TSeparatorOutput, TEachItemOutput>(separatorParser, eachItemParser);
+        return new SeparatedListOrNoneParser<TInput, TSeparatorOutput, TEachItemOutput>(separatorParser, eachItemParser);
     }
 }

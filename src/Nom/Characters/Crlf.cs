@@ -3,12 +3,12 @@
 namespace Nom.Characters;
 
 public interface ICrlfParser<T> : IParser<T, T>
-    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<string>
+    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<string>, IEmptyCheckable
 {
 }
 
 public class CrlfParser<T> : ICrlfParser<T>
-    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<string>
+    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<string>, IEmptyCheckable
 {
     public IResult<T, T> Parse(T input)
     {
@@ -24,6 +24,6 @@ public static class Crlf
     public static ICrlfParser<StringParsable> Create() => new CrlfParser<StringParsable>();
 
     public static ICrlfParser<T> Create<T>()
-        where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<string>
+        where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<string>, IEmptyCheckable
         => new CrlfParser<T>();
 }

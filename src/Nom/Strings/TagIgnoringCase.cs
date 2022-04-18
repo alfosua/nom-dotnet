@@ -4,12 +4,12 @@ using System.Text.RegularExpressions;
 namespace Nom.Strings;
 
 public interface ITagIgnoringCaseParser<T> : IParser<T, T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
 }
 
 public class TagIgnoringCaseParser<T> : ITagIgnoringCaseParser<T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
     public TagIgnoringCaseParser(string target)
     {
@@ -33,6 +33,6 @@ public static class TagIgnoringCase
     public static ITagIgnoringCaseParser<StringParsable> Create(string target) => new TagIgnoringCaseParser<StringParsable>(target);
 
     public static ITagIgnoringCaseParser<T> Create<T>(string target)
-        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new TagIgnoringCaseParser<T>(target);
 }
