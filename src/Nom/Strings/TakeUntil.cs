@@ -3,12 +3,12 @@
 namespace Nom.Strings;
 
 public interface ITakeUntilParser<T> : IParser<T, T>
-    where T : IParsable, ISplitableAtPosition<T>, IRegexMatchable
+    where T : IParsable, ISplitableAtPosition<T>, IRegexMatchable, IEmptyCheckable
 {
 }
 
 public class TakeUntilParser<T> : ITakeUntilParser<T>
-    where T : IParsable, ISplitableAtPosition<T>, IRegexMatchable
+    where T : IParsable, ISplitableAtPosition<T>, IRegexMatchable, IEmptyCheckable
 {
     public TakeUntilParser(string pattern)
     {
@@ -39,6 +39,6 @@ public class TakeUntilParser<T> : ITakeUntilParser<T>
 public static class TakeUntil
 {
     public static ITakeUntilParser<T> Create<T>(string pattern)
-        where T : IParsable, ISplitableAtPosition<T>, IRegexMatchable
+        where T : IParsable, ISplitableAtPosition<T>, IRegexMatchable, IEmptyCheckable
         => new TakeUntilParser<T>(pattern);
 }

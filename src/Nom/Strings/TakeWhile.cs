@@ -5,12 +5,12 @@ namespace Nom.Strings;
 public delegate bool TakeWhilePredicate(char value);
 
 public interface ITakeWhileParser<T> : IParser<T, T>
-    where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>
+    where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>, IEmptyCheckable
 {
 }
 
 public class TakeWhileParser<T> : ITakeWhileParser<T>
-    where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>
+    where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>, IEmptyCheckable
 {
     public TakeWhileParser(TakeWhilePredicate predicate)
     {
@@ -46,6 +46,6 @@ public class TakeWhileParser<T> : ITakeWhileParser<T>
 public static class TakeWhile
 {
     public static ITakeWhileParser<T> Create<T>(TakeWhilePredicate predicate)
-        where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>
+        where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>, IEmptyCheckable
         => new TakeWhileParser<T>(predicate);
 }

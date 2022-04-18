@@ -3,12 +3,12 @@
 namespace Nom.Characters;
 
 public interface ITabParser<T> : IParser<T, T>
-    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>
+    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
 {
 }
 
 public class TabParser<T> : ITabParser<T>
-    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>
+    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
 {
     public IResult<T, T> Parse(T input)
     {
@@ -24,6 +24,6 @@ public static class Tab
     public static ITabParser<StringParsable> Create() => new TabParser<StringParsable>();
 
     public static ITabParser<T> Create<T>()
-        where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>
+        where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
         => new TabParser<T>();
 }

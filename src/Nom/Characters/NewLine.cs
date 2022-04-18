@@ -3,12 +3,12 @@
 namespace Nom.Characters;
 
 public interface INewLineParser<T> : IParser<T, T>
-    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>
+    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
 {
 }
 
 public class NewLineParser<T> : INewLineParser<T>
-    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>
+    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
 {
     public IResult<T, T> Parse(T input)
     {
@@ -24,6 +24,6 @@ public static class NewLine
     public static INewLineParser<StringParsable> Create() => new NewLineParser<StringParsable>();
 
     public static INewLineParser<T> Create<T>()
-        where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>
+        where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
         => new NewLineParser<T>();
 }

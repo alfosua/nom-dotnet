@@ -3,12 +3,12 @@
 namespace Nom.Characters;
 
 public interface ISpaceOrNoneParser<T> : IParser<T, T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
 }
 
 public class SpaceOrNoneParser<T> : ISpaceOrNoneParser<T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
     public IResult<T, T> Parse(T input)
     {
@@ -24,6 +24,6 @@ public static class SpaceOrNone
     public static ISpaceOrNoneParser<StringParsable> Create() => new SpaceOrNoneParser<StringParsable>();
 
     public static ISpaceOrNoneParser<T> Create<T>()
-        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new SpaceOrNoneParser<T>();
 }

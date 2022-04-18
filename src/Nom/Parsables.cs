@@ -5,6 +5,8 @@ namespace Nom;
 public record StringParsable : IParsable
     , IWithContent<string>
     , ISplitableAtPosition<StringParsable>
+    , IRemainder
+    , IEmptyCheckable
     , IRegexMatchable
     , IContentVisitable<string>
     , IContentVisitable<char>
@@ -26,6 +28,7 @@ public record StringParsable : IParsable
     public string Content { get; init; }
     public int Offset { get; init; }
     public int PrecedingLines { get; init; }
+    public int PrecedingColumns { get; init; }
 
     public bool IsEmpty()
     {
@@ -111,7 +114,7 @@ public record StringParsable : IParsable
     }
 }
 
-public interface IParsable : IEmptyCheckable, IRemainder
+public interface IParsable
 {
 }
 
@@ -144,6 +147,7 @@ public interface IRemainder
 {
     int Offset { get; }
     int PrecedingLines { get; }
+    int PrecedingColumns { get; }
 }
 
 public interface IRemainderMutator

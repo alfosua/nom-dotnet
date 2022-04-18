@@ -3,12 +3,12 @@
 namespace Nom.Strings;
 
 public interface ILikeAnyOfParser<T> : IParser<T, T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
 }
 
 public class LikeAnyOfParser<T> : ILikeAnyOfParser<T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
     public LikeAnyOfParser(string target)
     {
@@ -31,6 +31,6 @@ public static class LikeAnyOf
     public static ILikeAnyOfParser<StringParsable> Create(string target) => new LikeAnyOfParser<StringParsable>(target);
 
     public static ILikeAnyOfParser<T> Create<T>(string target)
-        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new LikeAnyOfParser<T>(target);
 }

@@ -3,12 +3,12 @@
 namespace Nom.Characters;
 
 public interface IAlphabeticsParser<T> : IParser<T, T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
 }
 
 public class AlphabeticsParser<T> : IAlphabeticsParser<T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
     public IResult<T, T> Parse(T input)
     {
@@ -24,6 +24,6 @@ public static class Alphabetics
     public static IAlphabeticsParser<StringParsable> Create() => new AlphabeticsParser<StringParsable>();
     
     public static IAlphabeticsParser<T> Create<T>()
-        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new AlphabeticsParser<T>();
 }

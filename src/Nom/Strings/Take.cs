@@ -3,12 +3,12 @@
 namespace Nom.Strings;
 
 public interface ITakeParser<T> : IParser<T, T>
-    where T : IParsable, ISplitableAtPosition<T>
+    where T : IParsable, ISplitableAtPosition<T>, IEmptyCheckable
 {
 }
 
 public class TakeParser<T> : ITakeParser<T>
-    where T : IParsable, ISplitableAtPosition<T>
+    where T : IParsable, ISplitableAtPosition<T>, IEmptyCheckable
 {
     public TakeParser(int count)
     {
@@ -30,6 +30,6 @@ public class TakeParser<T> : ITakeParser<T>
 public static class Take
 {
     public static ITakeParser<T> Create<T>(int count)
-        where T : IParsable, ISplitableAtPosition<T>
+        where T : IParsable, ISplitableAtPosition<T>, IEmptyCheckable
         => new TakeParser<T>(count);
 }

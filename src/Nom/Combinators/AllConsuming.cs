@@ -1,12 +1,12 @@
 ﻿namespace Nom.Combinators;
 
 public interface IAllConsumingParser<TInput, TOutput> : IParser<TInput, TOutput>
-    where TInput : IParsable
+    where TInput : IParsable, IEmptyCheckable
 {
 }
 
 public class AllConsumingParser<TInput, TOutput> : IAllConsumingParser<TInput, TOutput>
-    where TInput : IParsable
+    where TInput : IParsable, IEmptyCheckable
 {
     public AllConsumingParser(IParser<TInput, TOutput> parser)
     {
@@ -33,7 +33,7 @@ public class AllConsumingParser<TInput, TOutput> : IAllConsumingParser<TInput, T
 public static class AllConsuming
 {
     public static IAllConsumingParser<TInput, TOutput> Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
-        where TInput : IParsable
+        where TInput : IParsable, IEmptyCheckable
     {
         return new AllConsumingParser<TInput, TOutput>(parser);
     }

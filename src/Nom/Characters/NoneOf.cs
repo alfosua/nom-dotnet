@@ -3,12 +3,12 @@
 namespace Nom.Characters;
 
 public interface INoneOfParser<T> : IParser<T, T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
 }
 
 public class NoneOfParser<T> : INoneOfParser<T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
 {
     public NoneOfParser(string target)
     {
@@ -31,6 +31,6 @@ public static class NoneOf
     public static INoneOfParser<StringParsable> Create(string target) => new NoneOfParser<StringParsable>(target);
 
     public static INoneOfParser<T> Create<T>(string target)
-        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>
+        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new NoneOfParser<T>(target);
 }
