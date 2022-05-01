@@ -10,12 +10,9 @@ public class EofParser<TInput, TOutput> : IEofParser<TInput, TOutput>
     where TInput : IParsable, IEmptyCheckable
     where TOutput : new()
 {
-    public EofParser(IParser<TInput, TOutput> parser)
+    public EofParser()
     {
-        Parser = parser;
     }
-
-    public IParser<TInput, TOutput> Parser { get; }
 
     public IResult<TInput, TOutput> Parse(TInput input)
     {
@@ -39,10 +36,15 @@ public class EofParser<TInput, TOutput> : IEofParser<TInput, TOutput>
 
 public static class Eof
 {
-    public static IEofParser<TInput, TOutput> Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
+    public static IParser<StringParsable, StringParsable> Create()
+    {
+        return new EofParser<StringParsable, StringParsable>();
+    }
+
+    public static IParser<TInput, TOutput> Create<TInput, TOutput>()
         where TInput : IParsable, IEmptyCheckable
         where TOutput : new()
     {
-        return new EofParser<TInput, TOutput>(parser);
+        return new EofParser<TInput, TOutput>();
     }
 }

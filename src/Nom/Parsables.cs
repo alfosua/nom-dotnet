@@ -148,6 +148,21 @@ public record StringParsable : IParsable
     {
         return MemoryMarshal.ToEnumerable(Content);
     }
+
+    public static implicit operator StringParsable(string value)
+    {
+        return value.AsParsable();
+    }
+
+    public static implicit operator string(StringParsable parsable)
+    {
+        return parsable.Content.ToString();
+    }
+
+    public static string operator +(StringParsable left, StringParsable right)
+    {
+        return left.Content.ToString() + right.Content.ToString();
+}
 }
 
 public interface IParsable

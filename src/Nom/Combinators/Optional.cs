@@ -1,14 +1,14 @@
 ﻿namespace Nom.Combinators;
 
-public interface IOptionalParser<TInput, TOutput> : IParser<TInput, TOutput>
+public interface IOptionalParser<TInput, TOutput> : IParser<TInput, TOutput?>
     where TInput : IParsable
-    where TOutput : new()
+    where TOutput : class
 {
 }
 
 public class OptionalParser<TInput, TOutput> : IOptionalParser<TInput, TOutput>
     where TInput : IParsable
-    where TOutput : new()
+    where TOutput : class
 {
     public OptionalParser(IParser<TInput, TOutput> parser)
     {
@@ -17,23 +17,16 @@ public class OptionalParser<TInput, TOutput> : IOptionalParser<TInput, TOutput>
 
     public IParser<TInput, TOutput> Parser { get; }
 
-    public IResult<TInput, TOutput> Parse(TInput input)
+    public IResult<TInput, TOutput?> Parse(TInput input)
     {
         try
         {
             var result = Parser.Parse(input);
-            return result;
+            return Result.Create<TInput, TOutput?>(result.Remainder, result.Output);
         }
         catch (InvalidOperationException)
         {
-            var output = new TOutput();
-
-            if (output is IRemainderMutator remainderMutator && input is IEmptyTailParsableDecorator decorator)
-            {
-                decorator.DecorateEmptyTail(remainderMutator);
-            }
-
-            return Result.Create(input, output);
+            return Result.Create(input, (TOutput?)null);
         }
     }
 }
@@ -42,7 +35,7 @@ public static class Optional
 {
     public static IOptionalParser<TInput, TOutput> Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
         where TInput : IParsable
-        where TOutput : new()
+        where TOutput : class
     {
         return new OptionalParser<TInput, TOutput>(parser);
     }

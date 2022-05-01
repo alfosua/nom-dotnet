@@ -11,10 +11,10 @@ public class MapParser<TInput, TParserOutput, TMapOutput>
     : IMapParser<TInput, TParserOutput, TMapOutput>
     where TInput : IParsable
 {
-    public MapParser(IParser<TInput, TParserOutput> parser, MapDelegate<TParserOutput, TMapOutput> mapDelegate)
+    public MapParser(IParser<TInput, TParserOutput> parser, MapDelegate<TParserOutput, TMapOutput> mapper)
     {
         Parser = parser;
-        Delegate = mapDelegate;
+        Delegate = mapper;
     }
 
     public IParser<TInput, TParserOutput> Parser { get; set; }
@@ -30,7 +30,7 @@ public class MapParser<TInput, TParserOutput, TMapOutput>
 
 public static class Map
 {
-    public static IMapParser<TInput, TParserOutput, TMapOutput>
+    public static IParser<TInput, TMapOutput>
         Create<TInput, TParserOutput, TMapOutput>(
             IParser<TInput, TParserOutput> parser,
             MapDelegate<TParserOutput, TMapOutput> mapDelegate)

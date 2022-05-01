@@ -1,25 +1,25 @@
 ﻿namespace Nom.Sequences;
 
-public interface ITerminatedParser<TCommonInput, TTerminatingOutput, TTargetOutput>
+public interface ITerminatedParser<TCommonInput, TTargetOutput, TTerminatingOutput>
     : IParser<TCommonInput, TTargetOutput>
     where TCommonInput : IParsable
 {
 }
 
-public class TerminatedParser<TCommonInput, TTerminatingOutput, TTargetOutput>
-    : ITerminatedParser<TCommonInput, TTerminatingOutput, TTargetOutput>
+public class TerminatedParser<TCommonInput, TTargetOutput, TTerminatingOutput>
+    : ITerminatedParser<TCommonInput, TTargetOutput, TTerminatingOutput>
     where TCommonInput : IParsable
 {
     public TerminatedParser(
-        IParser<TCommonInput, TTerminatingOutput> terminatingParser,
-        IParser<TCommonInput, TTargetOutput> targetParser)
+        IParser<TCommonInput, TTargetOutput> targetParser,
+        IParser<TCommonInput, TTerminatingOutput> terminatingParser)
     {
-        TerminatingParser = terminatingParser;
         TargetParser = targetParser;
+        TerminatingParser = terminatingParser;
     }
 
-    public IParser<TCommonInput, TTerminatingOutput> TerminatingParser { get; }
     public IParser<TCommonInput, TTargetOutput> TargetParser { get; }
+    public IParser<TCommonInput, TTerminatingOutput> TerminatingParser { get; }
 
     public IResult<TCommonInput, TTargetOutput> Parse(TCommonInput input)
     {
@@ -32,13 +32,12 @@ public class TerminatedParser<TCommonInput, TTerminatingOutput, TTargetOutput>
 public static class Terminated
 {
 
-    public static ITerminatedParser<TCommonInput, TTerminatingOutput, TTargetOutput>
-        Create<TCommonInput, TTerminatingOutput, TTargetOutput>(
-            IParser<TCommonInput, TTerminatingOutput> terminatingParser,
-            IParser<TCommonInput, TTargetOutput> targetParser)
+    public static IParser<TCommonInput, TTargetOutput>
+        Create<TCommonInput, TTargetOutput, TTerminatingOutput>(
+            IParser<TCommonInput, TTargetOutput> targetParser,
+            IParser<TCommonInput, TTerminatingOutput> terminatingParser)
             where TCommonInput : IParsable
     {
-        return new TerminatedParser<TCommonInput, TTerminatingOutput, TTargetOutput>(
-            terminatingParser, targetParser);
+        return new TerminatedParser<TCommonInput, TTargetOutput, TTerminatingOutput>(targetParser, terminatingParser);
     }
 }
