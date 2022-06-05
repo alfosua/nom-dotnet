@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Nom</PackageId>
-    <Version>0.3.0</Version>
+    <Version>0.4.0</Version>
     <Company>Boring Software Ltd</Company>
   </PropertyGroup>
 
