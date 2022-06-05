@@ -28,9 +28,9 @@ public class SatisfiedByParser<T> : ISatisfiedByParser<T>
 
 public static class SatisfiedBy
 {
-    public static ISatisfiedByParser<StringParsable> Create(Func<char, bool> predicate) => new SatisfiedByParser<StringParsable>(predicate);
-
-    public static ISatisfiedByParser<T> Create<T>(Func<char, bool> predicate)
+    public static IParser<StringParsable, StringParsable> Create(Func<char, bool> predicate) => new SatisfiedByParser<StringParsable>(predicate);
+    
+    public static IParser<T, T> Create<T>(Func<char, bool> predicate)
         where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
         => new SatisfiedByParser<T>(predicate);
 }

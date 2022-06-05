@@ -28,7 +28,7 @@ public class ValueParser<TInput, TParserOutput, TOutput> : IValueParser<TInput, 
 
 public static class Value
 {
-    public static IValueParser<TInput, TParserOutput, TOutput> Create<TInput, TParserOutput, TOutput>(
+    public static IParser<TInput, TOutput> Create<TInput, TParserOutput, TOutput>(
         TOutput value, IParser<TInput, TParserOutput> parser)
         where TInput : IParsable
     {

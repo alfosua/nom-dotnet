@@ -32,7 +32,7 @@ public class PrecededParser<TCommonInput, TPrecedingOutput, TTargetOutput>
 public static class Preceded
 {
 
-    public static IPrecededParser<TCommonInput, TPrecedingOutput, TTargetOutput>
+    public static IParser<TCommonInput, TTargetOutput>
         Create<TCommonInput, TPrecedingOutput, TTargetOutput>(
             IParser<TCommonInput, TPrecedingOutput> precedingParser,
             IParser<TCommonInput, TTargetOutput> targetParser)

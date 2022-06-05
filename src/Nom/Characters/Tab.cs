@@ -21,9 +21,9 @@ public class TabParser<T> : ITabParser<T>
 
 public static class Tab
 {
-    public static ITabParser<StringParsable> Create() => new TabParser<StringParsable>();
-
-    public static ITabParser<T> Create<T>()
+    public static IParser<StringParsable, StringParsable> Create() => new TabParser<StringParsable>();
+    
+    public static IParser<T, T> Create<T>()
         where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
         => new TabParser<T>();
 }

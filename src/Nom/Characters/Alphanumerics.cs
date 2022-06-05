@@ -22,9 +22,9 @@ public class AlphanumericsParser<T> : IAlphanumericsParser<T>
 
 public static class Alphanumerics
 {
-    public static IAlphanumericsParser<StringParsable> Create() => new AlphanumericsParser<StringParsable>();
+    public static IParser<StringParsable, StringParsable> Create() => new AlphanumericsParser<StringParsable>();
     
-    public static IAlphanumericsParser<T> Create<T>()
+    public static IParser<T, T> Create<T>()
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new AlphanumericsParser<T>();
 }

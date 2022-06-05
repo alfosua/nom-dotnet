@@ -21,9 +21,9 @@ public class DigitsParser<T> : IDigitsParser<T>
 
 public static class Digits
 {
-    public static IDigitsParser<StringParsable> Create() => new DigitsParser<StringParsable>();
+    public static IParser<StringParsable, StringParsable> Create() => new DigitsParser<StringParsable>();
     
-    public static IDigitsParser<T> Create<T>()
+    public static IParser<T, T> Create<T>()
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new DigitsParser<T>();
 }

@@ -32,7 +32,8 @@ public class AllConsumingParser<TInput, TOutput> : IAllConsumingParser<TInput, T
 
 public static class AllConsuming
 {
-    public static IAllConsumingParser<TInput, TOutput> Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
+    public static IParser<TInput, TOutput>
+        Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
         where TInput : IParsable, IEmptyCheckable
     {
         return new AllConsumingParser<TInput, TOutput>(parser);

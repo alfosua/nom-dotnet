@@ -23,9 +23,9 @@ public class TerminatedParser<TCommonInput, TTargetOutput, TTerminatingOutput>
 
     public IResult<TCommonInput, TTargetOutput> Parse(TCommonInput input)
     {
-        var terminatingResult = TerminatingParser.Parse(input);
-        var targetResult = TargetParser.Parse(terminatingResult.Remainder);
-        return Result.Create(targetResult.Remainder, targetResult.Output);
+        var targetResult = TargetParser.Parse(input);
+        var terminatingResult = TerminatingParser.Parse(targetResult.Remainder);
+        return Result.Create(terminatingResult.Remainder, targetResult.Output);
     }
 }
 

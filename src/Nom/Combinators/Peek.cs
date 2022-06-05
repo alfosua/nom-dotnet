@@ -24,7 +24,7 @@ public class PeekParser<TInput, TOutput> : IPeekParser<TInput, TOutput>
 
 public static class Peek
 {
-    public static IPeekParser<TInput, TOutput> Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
+    public static IParser<TInput, TOutput> Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
         where TInput : IParsable
     {
         return new PeekParser<TInput, TOutput>(parser);

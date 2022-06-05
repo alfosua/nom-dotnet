@@ -16,7 +16,7 @@ public class RestLengthParser<TInput> : IRestLengthParser<TInput>
 
 public static class RestLength
 {
-    public static IRestLengthParser<TInput> Create<TInput>()
+    public static IParser<TInput, int> Create<TInput>()
         where TInput : IParsable, IContentMeasurable
         => new RestLengthParser<TInput>();
 }

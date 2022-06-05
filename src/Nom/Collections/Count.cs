@@ -35,7 +35,7 @@ public class CountParser<TInput, TOutput> : ICountParser<TInput, TOutput>
 
 public static class Count
 {
-    public static ICountParser<TInput, TOutput>
+    public static IParser<TInput, ICollection<TOutput>>
         Create<TInput, TOutput>(IParser<TInput, TOutput> parser, int count)
             where TInput : IParsable
     {

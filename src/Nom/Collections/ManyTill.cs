@@ -42,7 +42,7 @@ public class ManyTillParser<TInput, TItemOutput, TEndOutput> : IManyTillParser<T
 
 public static class ManyTill
 {
-    public static IManyTillParser<TInput, TItemOutput, TEndOutput>
+    public static IParser<TInput, (ICollection<TItemOutput>, TEndOutput)>
         Create<TInput, TItemOutput, TEndOutput>(
             IParser<TInput, TItemOutput> itemParser, IParser<TInput, TEndOutput> endParser)
             where TInput : IParsable

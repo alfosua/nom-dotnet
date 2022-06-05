@@ -60,7 +60,7 @@ public class TakeWhileMinMaxParser<T> : ITakeWhileMinMaxParser<T>
 
 public static class TakeWhileMinMax
 {
-    public static ITakeWhileMinMaxParser<T> Create<T>(TakeWhileMinMaxPredicate predicate, int min, int max)
+    public static IParser<T, T> Create<T>(TakeWhileMinMaxPredicate predicate, int min, int max)
         where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>, IEmptyCheckable
         => new TakeWhileMinMaxParser<T>(predicate, min, max);
 }

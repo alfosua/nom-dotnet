@@ -47,7 +47,7 @@ public class SeparatedListOrNoneParser<TInput, TSeparatorOutput, TEachItemOutput
 
 public static class SeparatedListOrNone
 {
-    public static ISeparatedListOrNoneParser<TInput, TSeparatorOutput, TEachItemOutput>
+    public static IParser<TInput, ICollection<TEachItemOutput>>
         Create<TInput, TSeparatorOutput, TEachItemOutput>(
             IParser<TInput, TSeparatorOutput> separatorParser,
             IParser<TInput, TEachItemOutput> eachItemParser)

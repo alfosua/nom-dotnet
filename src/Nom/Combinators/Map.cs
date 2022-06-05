@@ -33,9 +33,9 @@ public static class Map
     public static IParser<TInput, TMapOutput>
         Create<TInput, TParserOutput, TMapOutput>(
             IParser<TInput, TParserOutput> parser,
-            MapDelegate<TParserOutput, TMapOutput> mapDelegate)
+            MapDelegate<TParserOutput, TMapOutput> mapper)
             where TInput : IParsable
     {
-        return new MapParser<TInput, TParserOutput, TMapOutput>(parser, mapDelegate);
+        return new MapParser<TInput, TParserOutput, TMapOutput>(parser, mapper);
     }
 }

@@ -16,6 +16,8 @@ public record StringParsable : IParsable
     , IContentMeasurable
     , IContentEnumerable<char>
 {
+    public static StringParsable Empty => new StringParsable();
+
     public StringParsable()
     {
         Content = ReadOnlyMemory<char>.Empty;

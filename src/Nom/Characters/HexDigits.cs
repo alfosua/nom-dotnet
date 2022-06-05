@@ -21,9 +21,9 @@ public class HexDigitsParser<T> : IHexDigitsParser<T>
 
 public static class HexDigits
 {
-    public static IHexDigitsParser<StringParsable> Create() => new HexDigitsParser<StringParsable>();
+    public static IParser<StringParsable, StringParsable> Create() => new HexDigitsParser<StringParsable>();
     
-    public static IHexDigitsParser<T> Create<T>()
+    public static IParser<T, T> Create<T>()
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new HexDigitsParser<T>();
 }

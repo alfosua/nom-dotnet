@@ -21,9 +21,9 @@ public class NewLineParser<T> : INewLineParser<T>
 
 public static class NewLine
 {
-    public static INewLineParser<StringParsable> Create() => new NewLineParser<StringParsable>();
-
-    public static INewLineParser<T> Create<T>()
+    public static IParser<StringParsable, StringParsable> Create() => new NewLineParser<StringParsable>();
+    
+    public static IParser<T, T> Create<T>()
         where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
         => new NewLineParser<T>();
 }

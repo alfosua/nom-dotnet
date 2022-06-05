@@ -29,7 +29,7 @@ public class PairParser<TCommonInput, TLeftOutput, TRightOutput> : IPairParser<T
 public static class Pair
 {
 
-    public static IPairParser<TCommonInput, TLeftOutput, TRightOutput>
+    public static IParser<TCommonInput, (TLeftOutput, TRightOutput)>
         Create<TCommonInput, TLeftOutput, TRightOutput>(
             IParser<TCommonInput, TLeftOutput> left,
             IParser<TCommonInput, TRightOutput> right)

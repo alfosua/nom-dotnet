@@ -40,7 +40,7 @@ public class NotParser<TInput, TOutput> : INotParser<TInput, TOutput>
 
 public static class Not
 {
-    public static INotParser<TInput, TOutput> Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
+    public static IParser<TInput, TOutput> Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
         where TInput : IParsable
         where TOutput : new()
     {

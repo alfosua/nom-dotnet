@@ -41,7 +41,7 @@ public class SeparatedListParser<TInput, TSeparatorOutput, TEachItemOutput>
 
             }
         }
-
+        
         if (outputs.Count == 0)
         {
             throw new InvalidOperationException("Could not parse anything with given criteria");
@@ -53,7 +53,7 @@ public class SeparatedListParser<TInput, TSeparatorOutput, TEachItemOutput>
 
 public static class SeparatedList
 {
-    public static ISeparatedListParser<TInput, TSeparatorOutput, TEachItemOutput>
+    public static IParser<TInput, ICollection<TEachItemOutput>>
         Create<TInput, TSeparatorOutput, TEachItemOutput>(
             IParser<TInput, TSeparatorOutput> separatorParser,
             IParser<TInput, TEachItemOutput> eachItemParser)

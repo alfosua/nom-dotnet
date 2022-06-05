@@ -29,7 +29,7 @@ public class TakeParser<T> : ITakeParser<T>
 
 public static class Take
 {
-    public static ITakeParser<T> Create<T>(int count)
+    public static IParser<T, T> Create<T>(int count)
         where T : IParsable, ISplitableAtPosition<T>, IEmptyCheckable
         => new TakeParser<T>(count);
 }

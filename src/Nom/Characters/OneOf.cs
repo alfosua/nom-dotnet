@@ -28,9 +28,9 @@ public class OneOfParser<T> : IOneOfParser<T>
 
 public static class OneOf
 {
-    public static IOneOfParser<StringParsable> Create(string target) => new OneOfParser<StringParsable>(target);
-
-    public static IOneOfParser<T> Create<T>(string target)
+    public static IParser<StringParsable, StringParsable> Create(string target) => new OneOfParser<StringParsable>(target);
+    
+    public static IParser<T, T> Create<T>(string target)
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new OneOfParser<T>(target);
 }

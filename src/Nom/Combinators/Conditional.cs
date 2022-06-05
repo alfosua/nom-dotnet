@@ -41,7 +41,7 @@ public class ConditionalParser<TInput, TOutput> : IConditionalParser<TInput, TOu
 
 public static class Conditional
 {
-    public static IConditionalParser<TInput, TOutput> Create<TInput, TOutput>(
+    public static IParser<TInput, TOutput> Create<TInput, TOutput>(
         bool condition,
         IParser<TInput, TOutput> parser)
         where TInput : IParsable

@@ -42,7 +42,7 @@ public class ManyParser<TInput, TOutput> : IManyParser<TInput, TOutput>
 
 public static class Many
 {
-    public static IManyParser<TInput, TOutput>
+    public static IParser<TInput, ICollection<TOutput>>
         Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
             where TInput : IParsable
     {

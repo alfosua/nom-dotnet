@@ -21,9 +21,9 @@ public class MultispaceParser<T> : IMultispaceParser<T>
 
 public static class Multispace
 {
-    public static IMultispaceParser<StringParsable> Create() => new MultispaceParser<StringParsable>();
-
-    public static IMultispaceParser<T> Create<T>()
+    public static IParser<StringParsable, StringParsable> Create() => new MultispaceParser<StringParsable>();
+    
+    public static IParser<T, T> Create<T>()
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new MultispaceParser<T>();
 }

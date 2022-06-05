@@ -21,9 +21,9 @@ public class OctetDigitsOrNoneParser<T> : IOctetDigitsOrNoneParser<T>
 
 public static class OctetDigitsOrNone
 {
-    public static IOctetDigitsOrNoneParser<StringParsable> Create() => new OctetDigitsOrNoneParser<StringParsable>();
+    public static IParser<StringParsable, StringParsable> Create() => new OctetDigitsOrNoneParser<StringParsable>();
 
-    public static IOctetDigitsOrNoneParser<T> Create<T>()
+    public static IParser<T, T> Create<T>()
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new OctetDigitsOrNoneParser<T>();
 }

@@ -29,7 +29,7 @@ public class RecognizeParser<TInput, TOutput> : IRecognizeParser<TInput, TOutput
 
 public static class Recognize
 {
-    public static IRecognizeParser<TInput, TOutput> Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
+    public static IParser<TInput, TInput> Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
         where TInput : IParsable
     {
         return new RecognizeParser<TInput, TOutput>(parser);

@@ -21,9 +21,9 @@ public class SpaceOrNoneParser<T> : ISpaceOrNoneParser<T>
 
 public static class SpaceOrNone
 {
-    public static ISpaceOrNoneParser<StringParsable> Create() => new SpaceOrNoneParser<StringParsable>();
+    public static IParser<StringParsable, StringParsable> Create() => new SpaceOrNoneParser<StringParsable>();
 
-    public static ISpaceOrNoneParser<T> Create<T>()
+    public static IParser<T, T> Create<T>()
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new SpaceOrNoneParser<T>();
 }

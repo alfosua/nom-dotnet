@@ -28,9 +28,9 @@ public class NoneOfParser<T> : INoneOfParser<T>
 
 public static class NoneOf
 {
-    public static INoneOfParser<StringParsable> Create(string target) => new NoneOfParser<StringParsable>(target);
+    public static IParser<StringParsable, StringParsable> Create(string target) => new NoneOfParser<StringParsable>(target);
 
-    public static INoneOfParser<T> Create<T>(string target)
+    public static IParser<T, T> Create<T>(string target)
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new NoneOfParser<T>(target);
 }

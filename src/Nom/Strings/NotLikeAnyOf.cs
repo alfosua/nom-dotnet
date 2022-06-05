@@ -28,9 +28,9 @@ public class NotLikeAnyOfParser<T> : INotLikeAnyOfParser<T>
 
 public static class NotLikeAnyOf
 {
-    public static INotLikeAnyOfParser<StringParsable> Create(string target) => new NotLikeAnyOfParser<StringParsable>(target);
+    public static IParser<StringParsable, StringParsable> Create(string target) => new NotLikeAnyOfParser<StringParsable>(target);
 
-    public static INotLikeAnyOfParser<T> Create<T>(string target)
+    public static IParser<T, T> Create<T>(string target)
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new NotLikeAnyOfParser<T>(target);
 }

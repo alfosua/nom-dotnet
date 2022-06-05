@@ -58,7 +58,7 @@ public class FoldManyMinMaxParser<TInput, TOutput, TAccumulation> : IFoldManyMin
 
 public static class FoldManyMinMax
 {
-    public static IFoldManyMinMaxParser<TInput, TOutput, TAccumulation>
+    public static IParser<TInput, TAccumulation>
         Create<TInput, TOutput, TAccumulation>(
             int min, int max, IParser<TInput, TOutput> parser, TAccumulation initial, FoldManyMinMaxAggregator<TAccumulation, TOutput> aggregator)
             where TInput : IParsable

@@ -26,7 +26,7 @@ public class UnwrapParser<TInput, TParserOutput, TOutput> : IUnwrapParser<TInput
 
 public static class Unwrap
 {
-    public static IUnwrapParser<TInput, TParserOutput, TOutput>
+    public static IParser<TInput, TOutput>
         Create<TInput, TParserOutput, TOutput>(
             IParser<TInput, TParserOutput> parser)
             where TInput : IParsable

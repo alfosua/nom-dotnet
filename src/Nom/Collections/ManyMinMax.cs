@@ -51,7 +51,7 @@ public class ManyMinMaxParser<TInput, TOutput> : IManyMinMaxParser<TInput, TOutp
 
 public static class ManyMinMax
 {
-    public static IManyMinMaxParser<TInput, TOutput>
+    public static IParser<TInput, ICollection<TOutput>>
         Create<TInput, TOutput>(int min, int max, IParser<TInput, TOutput> parser)
             where TInput : IParsable
     {

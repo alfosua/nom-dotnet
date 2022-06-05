@@ -38,7 +38,7 @@ public class VerifyParser<TInput, TOutput> : IVerifyParser<TInput, TOutput>
 
 public static class Verify
 {
-    public static IVerifyParser<TInput, TOutput> Create<TInput, TOutput>(
+    public static IParser<TInput, TOutput> Create<TInput, TOutput>(
         IParser<TInput, TOutput> parser,
         VerifyParserPredicate<TOutput> predicate)
         where TInput : IParsable

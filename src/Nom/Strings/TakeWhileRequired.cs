@@ -50,7 +50,7 @@ public class TakeWhileRequiredParser<T> : ITakeWhileRequiredParser<T>
 
 public static class TakeWhileRequired
 {
-    public static ITakeWhileRequiredParser<T> Create<T>(TakeWhileRequiredPredicate predicate)
+    public static IParser<T, T> Create<T>(TakeWhileRequiredPredicate predicate)
         where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>, IEmptyCheckable
         => new TakeWhileRequiredParser<T>(predicate);
 }

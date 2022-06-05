@@ -28,9 +28,9 @@ public class CharacterParser<T> : ICharacterParser<T>
 
 public static class Character
 {
-    public static ICharacterParser<StringParsable> Create(char target) => new CharacterParser<StringParsable>(target);
+    public static IParser<StringParsable, StringParsable> Create(char target) => new CharacterParser<StringParsable>(target);
 
-    public static ICharacterParser<T> Create<T>(char target)
+    public static IParser<T, T> Create<T>(char target)
         where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
         => new CharacterParser<T>(target);
 }

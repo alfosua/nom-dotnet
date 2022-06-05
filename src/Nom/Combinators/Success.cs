@@ -1,32 +1,24 @@
 ﻿namespace Nom.Combinators;
 
-public interface ISuccessParser<TInput, TOutput> : IParser<TInput, TOutput>
+public interface ISuccessParser<TInput> : IParser<TInput, object?>
     where TInput : IParsable
 {
-    TOutput Value { get; }
 }
 
-public class SuccessParser<TInput, TOutput> : ISuccessParser<TInput, TOutput>
+public class SuccessParser<TInput> : ISuccessParser<TInput>
     where TInput : IParsable
 {
-    public SuccessParser(TOutput value)
+    public IResult<TInput, object?> Parse(TInput input)
     {
-        Value = value;
-    }
-
-    public TOutput Value { get; }
-
-    public IResult<TInput, TOutput> Parse(TInput input)
-    {
-        return Result.Create(input, Value);
+        return Result.Create(input, (object?)null);
     }
 }
 
 public static class Success
 {
-    public static ISuccessParser<TInput, TOutput> Create<TInput, TOutput>(TOutput value)
-        where TInput : IParsable
+    public static IParser<TInput, object?> Create<TInput>()
+    where TInput : IParsable
     {
-        return new SuccessParser<TInput, TOutput>(value);
+        return new SuccessParser<TInput>();
     }
 }

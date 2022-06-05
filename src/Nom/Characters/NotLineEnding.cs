@@ -21,9 +21,9 @@ public class NotLineEndingParser<T> : INotLineEndingParser<T>
 
 public static class NotLineEnding
 {
-    public static INotLineEndingParser<StringParsable> Create() => new NotLineEndingParser<StringParsable>();
+    public static IParser<StringParsable, StringParsable> Create() => new NotLineEndingParser<StringParsable>();
     
-    public static INotLineEndingParser<T> Create<T>()
+    public static IParser<T, T> Create<T>()
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new NotLineEndingParser<T>();
 }

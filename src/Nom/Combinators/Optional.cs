@@ -33,7 +33,7 @@ public class OptionalParser<TInput, TOutput> : IOptionalParser<TInput, TOutput>
 
 public static class Optional
 {
-    public static IOptionalParser<TInput, TOutput> Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
+    public static IParser<TInput, TOutput?> Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
         where TInput : IParsable
         where TOutput : class
     {

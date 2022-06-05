@@ -30,9 +30,9 @@ public class TagIgnoringCaseParser<T> : ITagIgnoringCaseParser<T>
 
 public static class TagIgnoringCase
 {
-    public static ITagIgnoringCaseParser<StringParsable> Create(string target) => new TagIgnoringCaseParser<StringParsable>(target);
+    public static IParser<StringParsable, StringParsable> Create(string target) => new TagIgnoringCaseParser<StringParsable>(target);
 
-    public static ITagIgnoringCaseParser<T> Create<T>(string target)
+    public static IParser<T, T> Create<T>(string target)
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new TagIgnoringCaseParser<T>(target);
 }

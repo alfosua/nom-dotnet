@@ -21,9 +21,9 @@ public class CrlfParser<T> : ICrlfParser<T>
 
 public static class Crlf
 {
-    public static ICrlfParser<StringParsable> Create() => new CrlfParser<StringParsable>();
+    public static IParser<StringParsable, StringParsable> Create() => new CrlfParser<StringParsable>();
 
-    public static ICrlfParser<T> Create<T>()
+    public static IParser<T, T> Create<T>()
         where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<string>, IEmptyCheckable
         => new CrlfParser<T>();
 }

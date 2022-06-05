@@ -28,9 +28,9 @@ public class LikeAnyOfParser<T> : ILikeAnyOfParser<T>
 
 public static class LikeAnyOf
 {
-    public static ILikeAnyOfParser<StringParsable> Create(string target) => new LikeAnyOfParser<StringParsable>(target);
+    public static IParser<StringParsable, StringParsable> Create(string target) => new LikeAnyOfParser<StringParsable>(target);
 
-    public static ILikeAnyOfParser<T> Create<T>(string target)
+    public static IParser<T, T> Create<T>(string target)
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new LikeAnyOfParser<T>(target);
 }

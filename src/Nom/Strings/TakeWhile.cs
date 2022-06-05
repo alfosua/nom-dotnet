@@ -45,7 +45,7 @@ public class TakeWhileParser<T> : ITakeWhileParser<T>
 
 public static class TakeWhile
 {
-    public static ITakeWhileParser<T> Create<T>(TakeWhilePredicate predicate)
+    public static IParser<T, T> Create<T>(TakeWhilePredicate predicate)
         where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>, IEmptyCheckable
         => new TakeWhileParser<T>(predicate);
 }

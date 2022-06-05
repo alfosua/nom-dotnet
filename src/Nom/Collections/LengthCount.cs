@@ -36,7 +36,7 @@ public class LengthCountParser<TInput, TCountOutput, TItemOutput> : ILengthCount
 
 public static class LengthCount
 {
-    public static ILengthCountParser<TInput, TCountOutput, TItemOutput>
+    public static IParser<TInput, ICollection<TItemOutput>>
         Create<TInput, TCountOutput, TItemOutput>(
             IParser<TInput, TCountOutput> countParser, IParser<TInput, TItemOutput> itemParser)
             where TInput : IParsable

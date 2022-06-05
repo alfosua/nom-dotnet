@@ -21,9 +21,9 @@ public class LineEndingParser<T> : ILineEndingParser<T>
 
 public static class LineEnding
 {
-    public static ILineEndingParser<StringParsable> Create() => new LineEndingParser<StringParsable>();
+    public static IParser<StringParsable, StringParsable> Create() => new LineEndingParser<StringParsable>();
 
-    public static ILineEndingParser<T> Create<T>()
+    public static IParser<T, T> Create<T>()
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new LineEndingParser<T>();
 }

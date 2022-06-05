@@ -36,7 +36,7 @@ public class AlternationParser<TCommonInput, TEachParserOutput>
 public static class Alternation
 {
 
-    public static IAlternationParser<TCommonInput, TEachParserOutput>
+    public static IParser<TCommonInput, TEachParserOutput>
         Create<TCommonInput, TEachParserOutput>(
             IEnumerable<IParser<TCommonInput, TEachParserOutput>> parsers)
             where TCommonInput : IParsable

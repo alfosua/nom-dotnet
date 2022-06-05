@@ -21,9 +21,9 @@ public class AlphabeticsParser<T> : IAlphabeticsParser<T>
 
 public static class Alphabetics
 {
-    public static IAlphabeticsParser<StringParsable> Create() => new AlphabeticsParser<StringParsable>();
+    public static IParser<StringParsable, StringParsable> Create() => new AlphabeticsParser<StringParsable>();
     
-    public static IAlphabeticsParser<T> Create<T>()
+    public static IParser<T, T> Create<T>()
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new AlphabeticsParser<T>();
 }

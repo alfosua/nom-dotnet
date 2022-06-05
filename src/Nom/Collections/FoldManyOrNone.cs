@@ -45,7 +45,7 @@ public class FoldManyOrNoneParser<TInput, TOutput, TAccumulation> : IFoldManyOrN
 
 public static class FoldManyOrNone
 {
-    public static IFoldManyOrNoneParser<TInput, TOutput, TAccumulation>
+    public static IParser<TInput, TAccumulation>
         Create<TInput, TOutput, TAccumulation>(
             IParser<TInput, TOutput> parser, TAccumulation initial, FoldManyOrNoneAggregator<TAccumulation, TOutput> aggregator)
             where TInput : IParsable

@@ -35,7 +35,7 @@ public class SequenceParser<TCommonInput, TEachParserOutput>
 
 public static class Sequence
 {
-    public static ISequenceParser<TCommonInput, TEachParserOutput>
+    public static IParser<TCommonInput, ICollection<TEachParserOutput>>
         Create<TCommonInput, TEachParserOutput>(
             IEnumerable<IParser<TCommonInput, TEachParserOutput>> parsers)
             where TCommonInput : IParsable
@@ -43,7 +43,7 @@ public static class Sequence
         return new SequenceParser<TCommonInput, TEachParserOutput>(parsers);
     }
 
-    public static ISequenceParser<TCommonInput, TEachParserOutput>
+    public static IParser<TCommonInput, ICollection<TEachParserOutput>>
         Create<TCommonInput, TEachParserOutput>(
             params IParser<TCommonInput, TEachParserOutput>[] parsers)
             where TCommonInput : IParsable

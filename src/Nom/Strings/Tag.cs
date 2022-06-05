@@ -28,9 +28,9 @@ public class TagParser<T> : ITagParser<T>
 
 public static class Tag
 {
-    public static ITagParser<StringParsable> Create(string target) => new TagParser<StringParsable>(target);
+    public static IParser<StringParsable, StringParsable> Create(string target) => new TagParser<StringParsable>(target);
 
-    public static ITagParser<T> Create<T>(string target)
+    public static IParser<T, T> Create<T>(string target)
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new TagParser<T>(target);
 }

@@ -30,7 +30,7 @@ public class PipeParser<TInput, TLeftParserOutput, TRightParserOutput>
 
 public static class Pipe
 {
-    public static IPipeParser<TInput, TLeftParserOutput, TRightParserOutput>
+    public static IParser<TInput, TRightParserOutput>
         Create<TInput, TLeftParserOutput, TRightParserOutput>(
             IParser<TInput, TLeftParserOutput> leftParser,
             IParser<TLeftParserOutput, TRightParserOutput> rightParser)

@@ -53,7 +53,7 @@ public class PermutationParser<TCommonInput, TEachParserOutput>
 
 public static class Permutation
 {
-    public static IPermutationParser<TCommonInput, TEachParserOutput>
+    public static IParser<TCommonInput, ICollection<TEachParserOutput>>
         Create<TCommonInput, TEachParserOutput>(
             IEnumerable<IParser<TCommonInput, TEachParserOutput>> parsers)
             where TCommonInput : IParsable
@@ -61,7 +61,7 @@ public static class Permutation
         return new PermutationParser<TCommonInput, TEachParserOutput>(parsers);
     }
     
-    public static IPermutationParser<TCommonInput, TEachParserOutput>
+    public static IParser<TCommonInput, ICollection<TEachParserOutput>>
         Create<TCommonInput, TEachParserOutput>(
             params IParser<TCommonInput, TEachParserOutput>[] parsers)
             where TCommonInput : IParsable

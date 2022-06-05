@@ -50,7 +50,7 @@ public class FoldManyParser<TInput, TOutput, TAccumulation> : IFoldManyParser<TI
 
 public static class FoldMany
 {
-    public static IFoldManyParser<TInput, TOutput, TAccumulation>
+    public static IParser<TInput, TAccumulation>
         Create<TInput, TOutput, TAccumulation>(
             IParser<TInput, TOutput> parser, TAccumulation initial, FoldManyAggregator<TAccumulation, TOutput> aggregator)
             where TInput : IParsable

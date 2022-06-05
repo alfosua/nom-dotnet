@@ -36,7 +36,7 @@ public class DelimitedParser<TCommonInput, TLeftLimitOutput, TTargetOutput, TRig
 public static class Delimited
 {
 
-    public static IDelimitedParser<TCommonInput, TLeftLimitOutput, TTargetOutput, TRightLimitOutput>
+    public static IParser<TCommonInput, TTargetOutput>
         Create<TCommonInput, TLeftLimitOutput, TTargetOutput, TRightLimitOutput>(
             IParser<TCommonInput, TLeftLimitOutput> leftLimitParser,
             IParser<TCommonInput, TTargetOutput> targetParser,

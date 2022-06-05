@@ -21,9 +21,9 @@ public class MultispaceOrNoneParser<T> : IMultispaceOrNoneParser<T>
 
 public static class MultispaceOrNone
 {
-    public static IMultispaceOrNoneParser<StringParsable> Create() => new MultispaceOrNoneParser<StringParsable>();
+    public static IParser<StringParsable, StringParsable> Create() => new MultispaceOrNoneParser<StringParsable>();
     
-    public static IMultispaceOrNoneParser<T> Create<T>()
+    public static IParser<T, T> Create<T>()
         where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
         => new MultispaceOrNoneParser<T>();
 }

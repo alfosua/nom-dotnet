@@ -32,7 +32,7 @@ public class SeparatedPairParser<TCommonInput, TLeftOutput, TSeparatorOutput, TR
 
 public static class SeparatedPair
 {
-    public static ISeparatedPairParser<TCommonInput, TLeftOutput, TSeparatorOutput, TRightOutput>
+    public static IParser<TCommonInput, (TLeftOutput, TRightOutput)>
         Create<TCommonInput, TLeftOutput, TSeparatorOutput, TRightOutput>(
             IParser<TCommonInput, TLeftOutput> left,
             IParser<TCommonInput, TSeparatorOutput> separator,

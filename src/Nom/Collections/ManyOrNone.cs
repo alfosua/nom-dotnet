@@ -37,7 +37,7 @@ public class ManyOrNoneParser<TInput, TOutput> : IManyOrNoneParser<TInput, TOutp
 
 public static class ManyOrNone
 {
-    public static IManyOrNoneParser<TInput, TOutput>
+    public static IParser<TInput, ICollection<TOutput>>
         Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
             where TInput : IParsable
     {

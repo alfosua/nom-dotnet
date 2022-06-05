@@ -38,7 +38,7 @@ public class TakeUntilParser<T> : ITakeUntilParser<T>
 
 public static class TakeUntil
 {
-    public static ITakeUntilParser<T> Create<T>(string pattern)
+    public static IParser<T, T> Create<T>(string pattern)
         where T : IParsable, ISplitableAtPosition<T>, IRegexMatchable, IEmptyCheckable
         => new TakeUntilParser<T>(pattern);
 }

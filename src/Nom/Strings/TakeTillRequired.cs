@@ -45,7 +45,7 @@ public class TakeTillRequiredParser<T> : ITakeTillRequiredParser<T>
 
 public static class TakeTillRequired
 {
-    public static ITakeTillRequiredParser<T> Create<T>(TakeTillRequiredPredicate predicate)
+    public static IParser<T, T> Create<T>(TakeTillRequiredPredicate predicate)
         where T : IParsable, ISplitableAtPosition<T>, IContentEnumerable<char>, IEmptyCheckable
         => new TakeTillRequiredParser<T>(predicate);
 }

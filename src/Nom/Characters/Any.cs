@@ -22,9 +22,9 @@ public class AnyParser<T> : IAnyParser<T>
 
 public static class Any
 {
-    public static IAnyParser<StringParsable> Create() => new AnyParser<StringParsable>();
+    public static IParser<StringParsable, StringParsable> Create() => new AnyParser<StringParsable>();
 
-    public static IAnyParser<T> Create<T>()
+    public static IParser<T, T> Create<T>()
         where T : IParsable, ISplitableAtPosition<T>, IEmptyCheckable
         => new AnyParser<T>();
 }

@@ -20,7 +20,7 @@ public class RestParser<T> : IRestParser<T>
 
 public static class Rest
 {
-    public static IRestParser<T> Create<T>()
+    public static IParser<T, T> Create<T>()
         where T : IParsable, new()
     {
         return new RestParser<T>();

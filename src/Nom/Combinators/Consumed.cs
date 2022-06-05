@@ -24,7 +24,8 @@ public class ConsumedParser<TInput, TOutput> : IConsumedParser<TInput, TOutput>
 
 public static class Consumed
 {
-    public static IConsumedParser<TInput, TOutput> Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
+    public static IParser<TInput, (TInput, TOutput)>
+        Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
         where TInput : IParsable
     {
         return new ConsumedParser<TInput, TOutput>(parser);

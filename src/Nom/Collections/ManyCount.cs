@@ -42,7 +42,7 @@ public class ManyCountParser<TInput, TOutput> : IManyCountParser<TInput, TOutput
 
 public static class ManyCount
 {
-    public static IManyCountParser<TInput, TOutput>
+    public static IParser<TInput, int>
         Create<TInput, TOutput>(IParser<TInput, TOutput> parser)
             where TInput : IParsable
     {
