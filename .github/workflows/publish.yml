@@ -1,0 +1,40 @@
+name: publish nom package to nuget source
+on:
+  workflow_dispatch:
+    inputs:
+      target_version:
+        description: 'Target version to publish'
+        type: string
+        required: true
+      target_config:
+        description: 'Target configuration for build'
+        default: 'Release'
+        type: choice
+        options:
+        - Release
+        - Debug
+      nuget_source_url:
+        description: 'Nuget source to publish to'
+        default: 'https://api.nuget.org/v3/index.json'
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: "7.0.x"
+          include-prerelease: true
+
+      - name: Pack Nom project
+        run: >
+          dotnet pack ./src/Nom/Nom.csproj --configuration ${{github.event.inputs.target_config}}
+
+      - name: Push Nom nuget package to source
+        working-directory: "./src/Nom/bin/${{github.event.inputs.target_config}}"
+        run: |
+          dotnet nuget push "Nom.${{github.event.inputs.target_version}}.nupkg" \
+            --api-key ${{secrets.nuget_source_api_key}} \
+            --source ${{github.event.inputs.nuget_source_url}}
