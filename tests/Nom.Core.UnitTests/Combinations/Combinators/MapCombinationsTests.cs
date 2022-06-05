@@ -27,13 +27,13 @@ public class MapCombinationsTests
 
         var personParser = Map.Create(twoWordsParser, ((StringParsable FirstName, StringParsable LastName) x) => new Person
         {
-            FirstName = x.FirstName.Content,
-            LastName = x.LastName.Content,
+            FirstName = x.FirstName,
+            LastName = x.LastName,
         });
 
         var result = personParser.Parse(input);
 
-        Assert.Equal("_", result.Remainder.Content);
+        Assert.Equal("_", result.Remainder);
         Assert.Equal(expected, result.Output);
     }
 }

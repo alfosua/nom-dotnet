@@ -15,7 +15,7 @@ public class LinesTest
 
     public IParser<StringParsable, Point> CreatePointParser()
     {
-        var numberParser = Map.Create(Digits.Create(), (n) => int.Parse(n.Content));
+        var numberParser = Map.Create(Digits.Create(), (n) => int.Parse(n));
         var twoNumbersParser = SeparatedPair.Create(numberParser, Character.Create(','), numberParser);
         var pointParser = Map.Create(twoNumbersParser, ((int x, int y) p) => new Point(p.x, p.y));
         return pointParser;
@@ -52,7 +52,7 @@ public class LinesTest
         {
             var result = pointParser.Parse(input.AsParsable());
             Assert.Equal(expected, result.Output);
-            Assert.Equal(expectedRem, result.Remainder.Content);
+            Assert.Equal(expectedRem, result.Remainder);
         }
     }
 
@@ -71,7 +71,7 @@ public class LinesTest
         {
             var result = lineParser.Parse(input.AsParsable());
             Assert.Equal(expected, result.Output);
-            Assert.Equal(expectedRem, result.Remainder.Content);
+            Assert.Equal(expectedRem, result.Remainder);
         }
     }
 
@@ -108,6 +108,6 @@ public class LinesTest
         var result = linesParser.Parse(input);
 
         Assert.Equal(expected, result.Output);
-        Assert.Equal("", result.Remainder.Content);
+        Assert.Equal("", result.Remainder);
     }
 }

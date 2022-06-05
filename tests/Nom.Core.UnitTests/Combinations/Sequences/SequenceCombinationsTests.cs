@@ -17,7 +17,7 @@ public class SequenceCombinationsTests
 
         var result = parser.Parse(input);
         
-        Assert.Equal(expected, result.Output.Select(x => x.Content));
-        Assert.Equal(string.Empty, result.Remainder.Content);
+        Assert.Equal(expected, result.Output.Select(x => (string)x));
+        Assert.Equal(string.Empty, result.Remainder);
     }
 }
