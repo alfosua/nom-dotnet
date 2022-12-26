@@ -12,7 +12,7 @@ public class NewLineParser<T> : INewLineParser<T>
 {
     public IResult<T, T> Parse(T input)
     {
-        return CommonParsings.ParseByPredicatingNextContent<T, char>(input, c => c == '\n', new()
+        return CommonParsings.SplitAtNextIfSatisfied<T, char>(input, c => c == '\n', new()
         {
             ExceptionFactory = (_) => new InvalidOperationException($"Could not parse any new line at head"),
         });

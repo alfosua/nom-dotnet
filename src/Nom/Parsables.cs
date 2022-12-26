@@ -11,6 +11,8 @@ public record StringParsable : IParsable
     , IRegexMatchable
     , IContentVisitable<string>
     , IContentVisitable<char>
+    , IEquatable<string>
+    , IEquatableIgnoringCase<string>
     , IEmptyTailParsableFactory<StringParsable>
     , IEmptyTailParsableDecorator
     , IContentMeasurable
@@ -151,6 +153,54 @@ public record StringParsable : IParsable
         return MemoryMarshal.ToEnumerable(Content);
     }
 
+    public bool Equals(string? other)
+    {
+        var isEmpty = IsEmpty();
+
+        if (other is null && isEmpty)
+        {
+            return false;
+        }
+        else if (other is null && !isEmpty)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < Content.Length; i++)
+        {
+            if (Content.Span[i] != other?[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public bool EqualsIgnoringCase(string? other)
+    {
+        var isEmpty = IsEmpty();
+
+        if (other is null && isEmpty)
+        {
+            return false;
+        }
+        else if (other is null && !isEmpty)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < Content.Length; i++)
+        {
+            if (char.ToLower(Content.Span[i]) != char.ToLower(other?[i] ?? '0'))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static implicit operator StringParsable(string value)
     {
         return value.AsParsable();
@@ -164,11 +214,16 @@ public record StringParsable : IParsable
     public static string operator +(StringParsable left, StringParsable right)
     {
         return left.Content.ToString() + right.Content.ToString();
-}
+    }
 }
 
 public interface IParsable
 {
+}
+
+public interface IEquatableIgnoringCase<T>
+{
+    bool EqualsIgnoringCase(T? other);
 }
 
 public interface IRegexMatchable

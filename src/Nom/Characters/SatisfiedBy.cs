@@ -19,7 +19,7 @@ public class SatisfiedByParser<T> : ISatisfiedByParser<T>
 
     public IResult<T, T> Parse(T input)
     {
-        return CommonParsings.ParseByPredicatingNextContent(input, Predicate, new()
+        return CommonParsings.SplitAtNextIfSatisfied(input, Predicate, new()
         {
             ExceptionFactory = (_) => new InvalidOperationException("Could not parse by satisfying predicate at head"),
         });

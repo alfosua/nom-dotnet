@@ -3,12 +3,12 @@
 namespace Nom.Strings;
 
 public interface INotLikeAnyOfParser<T> : IParser<T, T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
+    where T : IParsable, IContentEnumerable<char>, ISplitableAtPosition<T>, IEmptyCheckable
 {
 }
 
 public class NotLikeAnyOfParser<T> : INotLikeAnyOfParser<T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
+    where T : IParsable, IContentEnumerable<char>, ISplitableAtPosition<T>, IEmptyCheckable
 {
     public NotLikeAnyOfParser(string target)
     {
@@ -19,10 +19,7 @@ public class NotLikeAnyOfParser<T> : INotLikeAnyOfParser<T>
 
     public IResult<T, T> Parse(T input)
     {
-        return CommonParsings.ParseByMatchingRegex(input, $@"^([^{Target}]+)", new()
-        {
-            ExceptionFactory = (_, _) => new InvalidOperationException($"Could not parse anything but like any of '{Target}' at head"),
-        });
+        return CommonParsings.SplitWhenUnsatisfiedOptional<T, char>(input, ch => !Target.Contains(ch));
     }
 }
 
@@ -31,6 +28,6 @@ public static class NotLikeAnyOf
     public static IParser<StringParsable, StringParsable> Create(string target) => new NotLikeAnyOfParser<StringParsable>(target);
 
     public static IParser<T, T> Create<T>(string target)
-        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
+        where T : IParsable, IContentEnumerable<char>, ISplitableAtPosition<T>, IEmptyCheckable
         => new NotLikeAnyOfParser<T>(target);
 }

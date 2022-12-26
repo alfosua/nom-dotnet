@@ -12,7 +12,7 @@ public class TabParser<T> : ITabParser<T>
 {
     public IResult<T, T> Parse(T input)
     {
-        return CommonParsings.ParseByPredicatingNextContent<T, char>(input, c => c == '\t', new()
+        return CommonParsings.SplitAtNextIfSatisfied<T, char>(input, c => c == '\t', new()
         {
             ExceptionFactory = (_) => new InvalidOperationException($"Could not parse any new line at head"),
         });

@@ -3,12 +3,12 @@
 namespace Nom.Characters;
 
 public interface IOneOfParser<T> : IParser<T, T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
+    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
 {
 }
 
 public class OneOfParser<T> : IOneOfParser<T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
+    where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
 {
     public OneOfParser(string target)
     {
@@ -19,9 +19,9 @@ public class OneOfParser<T> : IOneOfParser<T>
 
     public IResult<T, T> Parse(T input)
     {
-        return CommonParsings.ParseByMatchingRegex(input, $@"^[{Target}]", new()
+        return CommonParsings.SplitAtNextIfSatisfied<T, char>(input, Target.Contains, new()
         {
-            ExceptionFactory = (_, _) => new InvalidOperationException($"Could not parse one of '{Target}' at head"),
+            ExceptionFactory = (_) => new InvalidOperationException($"Could not parse anything but one of '{Target}' at head"),
         });
     }
 }
@@ -31,6 +31,6 @@ public static class OneOf
     public static IParser<StringParsable, StringParsable> Create(string target) => new OneOfParser<StringParsable>(target);
     
     public static IParser<T, T> Create<T>(string target)
-        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
+        where T : IParsable, ISplitableAtPosition<T>, IContentVisitable<char>, IEmptyCheckable
         => new OneOfParser<T>(target);
 }

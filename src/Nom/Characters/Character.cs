@@ -19,7 +19,7 @@ public class CharacterParser<T> : ICharacterParser<T>
 
     public IResult<T, T> Parse(T input)
     {
-        return CommonParsings.ParseByPredicatingNextContent<T, char>(input, c => c == Target, new()
+        return CommonParsings.SplitAtNextIfSatisfied<T, char>(input, c => c == Target, new()
         {
             ExceptionFactory = (_) => new InvalidOperationException($"Could not parse character '{Target}' at head"),
         });

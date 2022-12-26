@@ -1,14 +1,12 @@
-﻿using Nom.Sdk;
-
-namespace Nom.Strings;
+﻿namespace Nom.Strings;
 
 public interface ITagParser<T> : IParser<T, T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
+    where T : IParsable, ISplitableAtPosition<T>, IEmptyCheckable, IEquatable<string>
 {
 }
 
 public class TagParser<T> : ITagParser<T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
+    where T : IParsable, ISplitableAtPosition<T>, IEmptyCheckable, IEquatable<string>
 {
     public TagParser(string target)
     {
@@ -19,10 +17,14 @@ public class TagParser<T> : ITagParser<T>
 
     public IResult<T, T> Parse(T input)
     {
-        return CommonParsings.ParseByMatchingRegex(input, $@"^({Target})", new()
+        var (output, remainder) = input.SplitAtPosition(Target.Length);
+
+        if (!output.Equals(Target))
         {
-            ExceptionFactory = (_, _) => new InvalidOperationException($"Could not parse tag '{Target}' at head"),
-        });
+            throw new InvalidOperationException($"Could not parser tag '{Target}' at head");
+        }
+
+        return Result.Create(remainder, output);
     }
 }
 
@@ -31,6 +33,6 @@ public static class Tag
     public static IParser<StringParsable, StringParsable> Create(string target) => new TagParser<StringParsable>(target);
 
     public static IParser<T, T> Create<T>(string target)
-        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
+        where T : IParsable, ISplitableAtPosition<T>, IEmptyCheckable, IEquatable<string>
         => new TagParser<T>(target);
 }

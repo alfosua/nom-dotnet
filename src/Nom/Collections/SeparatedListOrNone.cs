@@ -27,11 +27,12 @@ public class SeparatedListOrNoneParser<TInput, TSeparatorOutput, TEachItemOutput
         
         while (stillListing)
         {
-            var itemResult = EachItem.Parse(remaining);
-            remaining = itemResult.Remainder;
-            outputs.Add(itemResult.Output);
             try
             {
+                var itemResult = EachItem.Parse(remaining);
+                remaining = itemResult.Remainder;
+                outputs.Add(itemResult.Output);
+
                 var separatorResult = Separator.Parse(itemResult.Remainder);
                 remaining = separatorResult.Remainder;
             }
@@ -41,6 +42,7 @@ public class SeparatedListOrNoneParser<TInput, TSeparatorOutput, TEachItemOutput
 
             }
         }
+        
         return Result.Create(remaining, outputs);
     }
 }

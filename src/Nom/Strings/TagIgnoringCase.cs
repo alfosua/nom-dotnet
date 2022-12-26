@@ -1,30 +1,30 @@
-﻿using Nom.Sdk;
-using System.Text.RegularExpressions;
-
-namespace Nom.Strings;
+﻿namespace Nom.Strings;
 
 public interface ITagIgnoringCaseParser<T> : IParser<T, T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
+    where T : IParsable, ISplitableAtPosition<T>, IEmptyCheckable, IEquatableIgnoringCase<string>
 {
 }
 
 public class TagIgnoringCaseParser<T> : ITagIgnoringCaseParser<T>
-    where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
+    where T : IParsable, ISplitableAtPosition<T>, IEmptyCheckable, IEquatableIgnoringCase<string>
 {
     public TagIgnoringCaseParser(string target)
     {
-        Target = target;
+        Target = target.ToLower();
     }
 
     public string Target { get; }
 
     public IResult<T, T> Parse(T input)
     {
-        return CommonParsings.ParseByMatchingRegex(input, $@"^({Target})", new()
+        var (output, remainder) = input.SplitAtPosition(Target.Length);
+
+        if (!output.EqualsIgnoringCase(Target))
         {
-            ExceptionFactory = (_, _) => new InvalidOperationException($"Could not parse tag '{Target}' (ignoring casing) at head"),
-            RegexOptions = RegexOptions.IgnoreCase,
-        });
+            throw new InvalidOperationException($"Could not parser tag '{Target}' ignoring case at head");
+        }
+
+        return Result.Create(remainder, output);
     }
 }
 
@@ -33,6 +33,6 @@ public static class TagIgnoringCase
     public static IParser<StringParsable, StringParsable> Create(string target) => new TagIgnoringCaseParser<StringParsable>(target);
 
     public static IParser<T, T> Create<T>(string target)
-        where T : IParsable, IRegexMatchable, ISplitableAtPosition<T>, IEmptyCheckable
+        where T : IParsable, ISplitableAtPosition<T>, IEmptyCheckable, IEquatableIgnoringCase<string>
         => new TagIgnoringCaseParser<T>(target);
 }

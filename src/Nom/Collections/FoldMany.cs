@@ -1,7 +1,5 @@
 ﻿namespace Nom.Collections;
 
-public delegate TAccumulation FoldManyAggregator<TAccumulation, TOutput>(TAccumulation accumulation, TOutput next);
-
 public interface IFoldManyParser<TInput, TOutput, TAccumulation> : IParser<TInput, TAccumulation>
     where TInput : IParsable
 {
@@ -10,7 +8,7 @@ public interface IFoldManyParser<TInput, TOutput, TAccumulation> : IParser<TInpu
 public class FoldManyParser<TInput, TOutput, TAccumulation> : IFoldManyParser<TInput, TOutput, TAccumulation>
     where TInput : IParsable
 {
-    public FoldManyParser(IParser<TInput, TOutput> parser, TAccumulation initial, FoldManyAggregator<TAccumulation, TOutput> aggregator)
+    public FoldManyParser(IParser<TInput, TOutput> parser, TAccumulation initial, Func<TAccumulation, TOutput, TAccumulation> aggregator)
     {
         Parser = parser;
         Initial = initial;
@@ -19,7 +17,7 @@ public class FoldManyParser<TInput, TOutput, TAccumulation> : IFoldManyParser<TI
 
     public IParser<TInput, TOutput> Parser { get; }
     public TAccumulation Initial { get; set; }
-    public FoldManyAggregator<TAccumulation, TOutput> Aggregator { get; set; }
+    public Func<TAccumulation, TOutput, TAccumulation> Aggregator { get; set; }
 
     public IResult<TInput, TAccumulation> Parse(TInput input)
     {
@@ -52,7 +50,7 @@ public static class FoldMany
 {
     public static IParser<TInput, TAccumulation>
         Create<TInput, TOutput, TAccumulation>(
-            IParser<TInput, TOutput> parser, TAccumulation initial, FoldManyAggregator<TAccumulation, TOutput> aggregator)
+            IParser<TInput, TOutput> parser, TAccumulation initial, Func<TAccumulation, TOutput, TAccumulation> aggregator)
             where TInput : IParsable
     {
         return new FoldManyParser<TInput, TOutput, TAccumulation>(parser, initial, aggregator);

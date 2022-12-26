@@ -12,7 +12,7 @@ public class CrlfParser<T> : ICrlfParser<T>
 {
     public IResult<T, T> Parse(T input)
     {
-        return CommonParsings.ParseByPredicatingNextContent<T, string>(input, c => c == "\r\n", new()
+        return CommonParsings.SplitAtNextIfSatisfied<T, string>(input, c => c == "\r\n", new()
         {
             ExceptionFactory = (_) => new InvalidOperationException($"Could not parse CRLF at head"),
         });
